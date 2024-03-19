@@ -1,4 +1,4 @@
-package com.model2.mvc.web.like;
+package com.model2.mvc.web.purchase;
 
 import java.util.Map;
 
@@ -19,46 +19,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.domain.User;
+import com.model2.mvc.service.product.ProductService;
+import com.model2.mvc.service.purchase.PurchaseService;
 import com.model2.mvc.service.user.UserService;
 
 
 //==> 회원관리 RestController
 @RestController
-@RequestMapping("/user/*")
-public class UserRestController {
+@RequestMapping("/purchase/*")
+public class PurchaseRestController {
 	
 	///Field
 	@Autowired
-	@Qualifier("userServiceImpl")
-	private UserService userService;
+	@Qualifier("PurchaseServiceImpl")
+	private PurchaseService purchaseService;
 	//setter Method 구현 않음
 		
-	public UserRestController(){
+	@Autowired
+	@Qualifier("ProductServiceImpl")
+	private ProductService productService;
+	//setter Method 구현 않음
+		
+	public PurchaseRestController(){
 		System.out.println(this.getClass());
 	}
 	
-	@RequestMapping( value="json/getUser/{userId}", method=RequestMethod.GET )
-	public User getUser( @PathVariable String userId ) throws Exception{
+	@RequestMapping( value="/json/getPurchase/{tranNo}", method=RequestMethod.GET )
+	public Purchase getPurchase( @PathVariable String tranNo ) throws Exception{
+		System.out.println("tranNo" + tranNo);
+		System.out.println("/purchase/json/getPurchase : GET");
 		
-		System.out.println("/user/json/getUser : GET");
+		Purchase purchase = purchaseService.getPurchase(Integer.parseInt(tranNo));
 		//Business Logic
-		return userService.getUser(userId);
+		return purchase;
 	}
 
-	@RequestMapping( value="json/login", method=RequestMethod.POST )
-	public User login(	@RequestBody User user,
-									HttpSession session ) throws Exception{
 	
-		System.out.println("/user/json/login : POST");
-		//Business Logic
-		System.out.println("::"+user);
-		User dbUser=userService.getUser(user.getUserId());
-		
-		if( user.getPassword().equals(dbUser.getPassword())){
-			session.setAttribute("user", dbUser);
-		}
-		
-		return dbUser;
-	}
 }

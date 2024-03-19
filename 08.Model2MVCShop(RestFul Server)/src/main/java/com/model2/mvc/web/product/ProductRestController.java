@@ -19,46 +19,63 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.User;
+import com.model2.mvc.service.like.LikeService;
+import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.user.UserService;
 
 
 //==> 회원관리 RestController
 @RestController
-@RequestMapping("/user/*")
+@RequestMapping("/product/*")
 public class ProductRestController {
 	
 	///Field
 	@Autowired
-	@Qualifier("userServiceImpl")
-	private UserService userService;
+	@Qualifier("ProductServiceImpl")
+	private ProductService productService;
+	
+	@Autowired
+	@Qualifier("LikeServiceImpl")
+	private LikeService likeService;
 	//setter Method 구현 않음
 		
 	public ProductRestController(){
 		System.out.println(this.getClass());
 	}
 	
-	@RequestMapping( value="json/getUser/{userId}", method=RequestMethod.GET )
-	public User getUser( @PathVariable String userId ) throws Exception{
+	@RequestMapping( value="json/getProduct/{prodNo}", method=RequestMethod.GET )
+	public Product getProduct( @PathVariable int prodNo ) throws Exception{
 		
-		System.out.println("/user/json/getUser : GET");
+		System.out.println("/product/json/getProduct : GET");
+		
+		Product prodVo = productService.getProduct(prodNo);
 		//Business Logic
-		return userService.getUser(userId);
+		return prodVo;
 	}
 
-	@RequestMapping( value="json/login", method=RequestMethod.POST )
-	public User login(	@RequestBody User user,
-									HttpSession session ) throws Exception{
+	@RequestMapping(value = "json/updateProduct/{prodNo}", method = RequestMethod.GET)
+	public Product updateProductGet( @PathVariable int prodNo ) throws Exception{
+		
+		System.out.println("/product/json/updateProduct : GET");
+		
+		Product productNo = productService.getProduct(prodNo);
+		
+		return productNo;
+		
+	}
 	
-		System.out.println("/user/json/login : POST");
-		//Business Logic
-		System.out.println("::"+user);
-		User dbUser=userService.getUser(user.getUserId());
+	@RequestMapping(value = "json/updateProduct/{prodNo}", method = RequestMethod.POST)
+	public Product updateProductPost( @PathVariable int prodNo ) throws Exception{
 		
-		if( user.getPassword().equals(dbUser.getPassword())){
-			session.setAttribute("user", dbUser);
-		}
+		System.out.println("/product/json/updateProduct : POST");
 		
-		return dbUser;
+		Product product1 = productService.getProduct(prodNo);
+		
+		productService.updateProduct(product1);
+		
+		return product1;
+		
 	}
 }

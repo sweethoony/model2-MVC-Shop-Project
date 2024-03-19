@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation=
+				"http://www.springframework.org/schema/beans 
+				 http://www.springframework.org/schema/beans/spring-beans.xsd
+				 http://www.springframework.org/schema/aop 
+				 http://www.springframework.org/schema/aop/spring-aop.xsd">
+				
+		<!-- 이 XML 코드는 Spring AOP(Aspect-Oriented Programming)을 사용하여 로깅을 처리 -->		
+		<!--  AOP 적용 : LOG 를 처리사느  Aspect 선언   -->
+	<!-- 1.일반 Bean Definition :: POJO 기반 -->
+	<bean 	id="logAspect"		class="com.model2.mvc.common.aspect.LogAspectJ" />
+	<!-- logAspect라는 이름의 빈(Bean)을 정의합니다. 해당 빈은 com.model2.mvc.common.aspect.LogAspectJ 클래스의 인스턴스를 생성합니다.
+		 이 클래스는 AOP에서 사용될 Aspect를 정의합니다.-->
+	 
+	 <!-- 2. 선언적으로 Point cut / Advice 정의 
+	 			:: TestAspectJ02.java(pointCut+advice 합치기(?)) 의 annotation과 아래를 비교 -->
+	 <aop:config>
+	 	<aop:aspect  ref="logAspect">
+	 		<aop:around 
+					pointcut="execution(* com.model2.mvc.service..*Impl.*(..) )"	method="invoke"/>
+	 	</aop:aspect>
+	 </aop:config>
+	<!-- 패키지에서 Impl로 끝나는 클래스의 모든 메서드에 대해 AOP를 적용하여 로깅을 수행하도록 구성되었다.
+	AspectJ를 사용한 AOP구현은 주로  cross-cutting concerns을 분리하여 코드의 모듈성을 향상 시킨다.-->
+</beans>

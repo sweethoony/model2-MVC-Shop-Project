@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:util="http://www.springframework.org/schema/util"
+
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation=
+				"http://www.springframework.org/schema/beans 
+				http://www.springframework.org/schema/beans/spring-beans.xsd
+				 http://www.springframework.org/schema/context 
+				 http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/util 
+				http://www.springframework.org/schema/util/spring-util.xsd">
+	
+	<!-- 이 XML 코드는 Spring 프레임워크에서 어노테이션을 기반으로 하는 컴포넌트 스캔을 설정하는 부분 -->
+	<!-- 	ㅇ 어노테이션 기반 :: Spring Framework 사용. :: sub element 이해 할것 -->				
+	<context:component-scan base-package="com.model2.mvc.service">
+		<context:include-filter type="annotation"	expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"	expression="org.springframework.stereotype.Repository" />
+		<context:exclude-filter type="annotation" 	expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>				
+				<!-- Spring의 컴포넌트 스캔을 설정하는 엘리먼트
+					base-package 속성은 스캔을 할 베이스 패키지를 지정합니다.
+					<context:include-filter> 엘리먼트는 특정 어노테이션을 가진 클래스를 포함시킵니다. 
+					여기서는 @Service와 @Repository 어노테이션을 가진 클래스들을 포함시킵니다.
+					<context:exclude-filter> 엘리먼트는 특정 어노테이션을 가진 클래스를 제외시킵니다. 
+					여기서는 @Controller 어노테이션을 가진 클래스들을 제외시킵니다.-->
+</beans>

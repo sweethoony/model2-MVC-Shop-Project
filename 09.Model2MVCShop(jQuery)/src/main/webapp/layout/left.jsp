@@ -98,7 +98,7 @@
 				</tr>
 				<tr>
 					<td class="Depth03">
-						<a href="/listProduct.do?menu=manage"  target="rightFrame">판매상품관리</a>
+						<a href="/product/listProduct?menu=manage"  target="rightFrame">판매상품관리</a>
 					</td>
 				</tr>
 				<tr>
@@ -115,14 +115,19 @@
 		<table  border="0" cellspacing="0" cellpadding="0" width="159">
 			<tr>
 				<td class="Depth03">
-					<a href="/listProduct.do?menu=search" target="rightFrame">상 품 검 색</a>
+					<a href="/product/listProduct?menu=search" target="rightFrame">상 품 검 색</a>
 				</td>
 			</tr>
 			
 			<c:if test="${ !empty user && user.role == 'user'}">
 			<tr>
 				<td class="Depth03">
-					<a href="/listPurchase.do"  target="rightFrame">구매이력조회</a>
+					<a href="/purchase/listPurchase"  target="rightFrame">구매이력조회</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="Depth03">
+					<a href="/like/wishListLike"  target="rightFrame">위시리스트</a>
 				</td>
 			</tr>
 			</c:if>
@@ -137,6 +142,11 @@
 	</td>
 </tr>
 
+			<tr>
+				<td class="Depth03">
+					<a href="/like/listLike"  target="rightFrame">인기 상품 랭킹</a>
+				</td>
+			</tr>
 </table>
 
 </body>

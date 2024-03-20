@@ -67,7 +67,7 @@ public class ProductController {
 	}
 	
 //	@RequestMapping("/addProduct.do")
-	@RequestMapping(value = "addProduct", method = RequestMethod.GET)
+	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
 	public String addProduct( @ModelAttribute("product") Product product, Model model) throws Exception {
 
 		System.out.println("/product/addProduct : GET");

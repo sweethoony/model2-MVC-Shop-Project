@@ -43,7 +43,7 @@
 			$("#userId").focus();
 			
 			//==> 추가된부분 : "Login"  Event 연결
-			$("img[src='/images/btn_login.gif']").on("click" , function() {
+			$("img[src='/images/btn_login.png']").on("click" , function() {
 
 				var id=$("input:text").val();
 				var pw=$("input:password").val();
@@ -157,7 +157,7 @@
                          		<img src="/images/btn_login.gif" width="56" height="20" border="0"/>
                          	</a>
 							////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                         		<img src="/images/btn_login.gif" width="56" height="20" border="0"/>
+                         		<img src="/images/btn_login.png" width="56" height="20" border="0"/>
                          </td>
                          <td width="10">&nbsp;</td>
                          <td width="70">

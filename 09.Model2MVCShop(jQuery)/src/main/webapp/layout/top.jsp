@@ -9,7 +9,7 @@
 <head>
 	<meta charset="EUC-KR">
 	
-	<title>Model2 MVC Shop</title>
+	<title>후니#</title>
 	
 	<link href="/css/left.css" rel="stylesheet" type="text/css">
 	
@@ -50,7 +50,7 @@
 	<td height="10" >&nbsp;</td>
   </tr>
   <tr>
-    <td width="800" height="30"><h2>Model2 MVC Shop</h2></td>
+    <td width="800" height="30"><p align="right"><font size="4" color="#0080FF">후니# 입니다!</font></p></td>
   </tr>
   <tr>
     <td height="20" align="right" background="/images/img_bg.gif">

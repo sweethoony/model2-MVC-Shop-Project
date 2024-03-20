@@ -6,9 +6,9 @@
 
 <head>
 	<meta charset="EUC-KR">
-	
-	<title>Model2 MVC Shop</title>
-	
+	<center>
+		<title>후니#</title>
+	</center>
 </head>
 
 <frameset rows="80,*" cols="*" frameborder="NO" border="0" framespacing="0">

@@ -14,16 +14,21 @@
 	
 	<!-- CDN(Content Delivery Network) 호스트 사용 -->
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../javascript/common/fncGetList.js">
+
+	</script>
+	
+	
 	<script type="text/javascript">
 	
 		//=====기존Code 주석 처리 후  jQuery 변경 ======//
 		// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-		function fncGetUserList(currentPage) {
+		//function fncGetUserList(currentPage) {
 			//document.getElementById("currentPage").value = currentPage;
-			$("#currentPage").val(currentPage)
+			//$("#currentPage").val(currentPage)
 		   	//document.detailForm.submit();
-			$("form").attr("method" , "POST").attr("action" , "/user/listUser").submit();
-		}
+			//$("form").attr("method" , "POST").attr("action" , "/user/listUser").submit();
+		//}
 		//===========================================//
 		//==> 추가된부분 : "검색" ,  userId link  Event 연결 및 처리
 		 $(function() {
@@ -34,7 +39,7 @@
 			 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
 				//Debug..
 				//alert(  $( "td.ct_btn01:contains('검색')" ).html() );
-				fncGetUserList(1);
+				fncGetList(1);
 			});
 			
 			
@@ -74,7 +79,7 @@
 <!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 <form name="detailForm" action="/listUser.do" method="post">
 ////////////////////////////////////////////////////////////////////////////////////////////////// -->
-<form name="detailForm">
+<form name="detailFormUser">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>

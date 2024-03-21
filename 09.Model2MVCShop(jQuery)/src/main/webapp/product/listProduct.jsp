@@ -22,16 +22,31 @@
 	   	document.detailForm.submit();		
 	}
 	</script> --%>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="../javascript/common/fncGetList.js">
 </script>
+<script type="text/javascript">
+		var menu = ${requestScope.menu}
+		var search
+		var manage
+		
+		 $(function() {
+			 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
+				 fncGetList(1);
+			 });			 
+			
+		 });
+</script>
+
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" action="/product/listProduct?menu=${requestScope.menu}" method="post">
+<!-- <form name="detailFormProduct" action="/product/listProduct?menu=${requestScope.menu}" method="post"> -->
 
+<form name="detailFormProduct" >
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
 		<td width="15" height="37">
@@ -233,7 +248,8 @@
                 <img src="/images/ct_btnbg01.gif" width="17" height="23">
             </td>
             <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-                <a href="javascript:fncGetList(1);">검색</a>
+               <!--  <a href="javascript:fncGetList(1);">검색</a>--> 
+               검색
             </td>
             <td width="14" height="23">
                 <img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -270,10 +286,10 @@
             <td></td>
             <c:choose>
                 <c:when test="${vo.proTranCode == '0'}">
-                    <td align="left">
-                        <a href="/product/getProduct?prodNo=${vo.prodNo}&menu=${(menu != null && menu =='manage') ? 'manage': 'search'}">
+                    <td id="prodName" align="left">
+                     <a href="/product/getProduct?prodNo=${vo.prodNo}&menu=${(menu != null && menu =='manage') ? 'manage': 'search'}"> 
                             ${vo.prodName}
-                        </a>
+                       
                     </td>
                 </c:when>
                 <c:otherwise>

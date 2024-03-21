@@ -15,7 +15,7 @@
 <title>¿Œ±‚ ∑©≈∑</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
-
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="../javascript/common/fncGetList.js">
 </script>
 
@@ -35,8 +35,8 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/purchase/listPurchase" method="post">
-
+<!-- <form name="detailForm" action="/like/listLike"method="post"> -->
+<form name="detailFormLike">
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
 		<td width="15" height="37"><img src="/images/ct_ttl_img01.gif"width="15" height="37"></td>

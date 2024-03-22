@@ -72,6 +72,7 @@ public class ProductController {
 
 		System.out.println("/product/addProduct : GET");
 		//Business Logic
+		
 		product.setManuDate(product.getManuDate().replace("-", ""));
 		productService.addProduct(product);
 		
@@ -101,13 +102,17 @@ public class ProductController {
 	    model.addAttribute("pushLikeNo1", pushLikeNo);
 	    model.addAttribute("prodVo", prodVo);
 	    model.addAttribute("menu", menu);
-
+	    
+	    System.out.println("/getProduct. menu  1"  + menu);
 	    if (menu != null && !menu.isEmpty()) {
+	    	 System.out.println("/getProduct. menu  2" + menu);
 	        if (menu.equals("search")) {
+	        	 System.out.println("/getProduct. menu  3" + menu);
 	            String history = "";
 	            Cookie[] cookies = request.getCookies();
-
+	            System.out.println("/getProduct. cookies  1" + cookies);
 	            if (cookies != null) {
+	            	System.out.println("/getProduct. cookies  2" + cookies);
 	                for (Cookie cookie : cookies) {
 	                    if (cookie.getName().equals("history")) {
 	                        history = cookie.getValue();
@@ -124,7 +129,7 @@ public class ProductController {
 	            Cookie historyCookie = new Cookie("history", history);
 	            historyCookie.setMaxAge(60 * 60);
 	            response.addCookie(historyCookie);
-
+	            
 	            return "forward:/product/getProduct.jsp";
 	        } else {
 

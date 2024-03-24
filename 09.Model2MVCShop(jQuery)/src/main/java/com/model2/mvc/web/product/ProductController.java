@@ -123,13 +123,17 @@ public class ProductController {
 
 	            if (history.isEmpty()) {
 	                history = String.valueOf(prodNo); 
+	                System.out.println("/getProduct. history  1" + history);
 	            } else if (!Arrays.asList(history.split(":")).contains(String.valueOf(prodNo))) {
 	                history += ":" + prodNo;  
+	                System.out.println("/getProduct. history  2" + history);
 	            }
 	            Cookie historyCookie = new Cookie("history", history);
+	            historyCookie.setPath("/");
+	            System.out.println("/getProduct. historyCookie  1" + historyCookie);
 	            historyCookie.setMaxAge(60 * 60);
 	            response.addCookie(historyCookie);
-	            
+	            System.out.println("/getProduct. historyCookie  2" + historyCookie);
 	            return "forward:/product/getProduct.jsp";
 	        } else {
 

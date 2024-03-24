@@ -42,13 +42,13 @@
 		        var prodNo = $(this).attr("data-prodNo"); 
 		        var menu = $(this).attr("data-menu");
 		        self.location = "/product/getProduct?prodNo=" + prodNo + "&menu=" + menu;
-		    });--%>
+		    });
 
 		    $(".updateTranCodeByProd").on("click", function() {
 		        var prodNo1 = $(this).attr("data-prodNo"); 
 		        self.location = "/purchase/updateTranCodeByProd?prodNo="+prodNo1+"&tranCode=2"
-		    });
-		});
+		    });--%>
+	
 
 </script>
 

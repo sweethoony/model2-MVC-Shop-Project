@@ -3,7 +3,9 @@ package com.model2.mvc.web.product;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -72,33 +75,54 @@ public class ProductController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
-	public String addProduct( @ModelAttribute("product") Product product,@RequestParam("fileName") MultipartFile file , Model model) throws Exception {
+	public String addProduct( Model model, MultipartHttpServletRequest request) throws Exception {
 
 		System.out.println("/product/addProduct : GET");
 		//Business Logic
-		String rootStoragePath = "/images/uploadFiles";
-		String fileStoragePath = "";
+		List<MultipartFile> fileList = request.getFiles("fileName");
 		
-		Path saveRepoPath = Paths.get(rootStoragePath, fileStoragePath );
+        String path = "C:\\Users\\jhyng\\git\\model2-MVC-Shop-Project\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles\\";
 		
-		System.out.println("saveRepoPath :: "+saveRepoPath);
+		Product product = new Product();
 		
-		String orgFileName  = file.getOriginalFilename();
+		List<String> fileNames = new ArrayList<>();
 		
-		System.out.println("orgFileName :: "+orgFileName);
+		for(MultipartFile multiFile : fileList) {
+			String orgFileName  = multiFile.getOriginalFilename();
+			long filesize = multiFile.getSize();
+			
+			System.out.println("orgFileName :: "+orgFileName);
+			System.out.println("filesize :: "+filesize);
+			
+			fileNames.add(orgFileName);
+			
+			String safeFile = path + orgFileName;
+			try {
+				multiFile.transferTo(new File(safeFile));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("fileNames"+fileNames);
 		
-		Path destPath = saveRepoPath.resolve(orgFileName);
+		StringBuilder sb = new StringBuilder();
+		for (String name : fileNames) {
+		    sb.append(name).append(",");
+		}
+		System.out.println("sb :: "+sb);
+		if (sb.length() > 0) {
+		    sb.deleteCharAt(sb.length() - 1);
+		}
 		
-		System.out.println("destPath :: "+destPath);
+		String fileNamesCSV = sb.toString();	
 		
-	    File dest = destPath.toFile();
-		
-	    System.out.println("dest :: "+dest);
+	    product.setProdName(request.getParameter("prodName"));
+	    product.setProdDetail(request.getParameter("prodDetail"));
+	    product.setManuDate(request.getParameter("manuDate").replace("-",""));
+	    product.setPrice(Integer.parseInt(request.getParameter("price")));
 	    
-	    file.transferTo(dest);
-	    
-		product.setFileName(orgFileName);
-		product.setManuDate(product.getManuDate().replace("-", ""));
+	    product.setFileName(fileNamesCSV);
+		
 		productService.addProduct(product);
 		
 		model.addAttribute("productVO", product);

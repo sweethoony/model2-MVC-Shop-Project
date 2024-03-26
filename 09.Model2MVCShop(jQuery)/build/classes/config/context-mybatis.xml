@@ -22,4 +22,11 @@
 		<constructor-arg ref="sqlSessionFactoryBean"/>
 	</bean>
 
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="200000"/>
+    <property name="maxInMemorySize" value="200000"/>
+</bean>
+
+
+		
 </beans>

@@ -1,5 +1,8 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -68,11 +72,32 @@ public class ProductController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
-	public String addProduct( @ModelAttribute("product") Product product, Model model) throws Exception {
+	public String addProduct( @ModelAttribute("product") Product product,@RequestParam("fileName") MultipartFile file , Model model) throws Exception {
 
 		System.out.println("/product/addProduct : GET");
 		//Business Logic
+		String rootStoragePath = "/images/uploadFiles";
+		String fileStoragePath = "";
 		
+		Path saveRepoPath = Paths.get(rootStoragePath, fileStoragePath );
+		
+		System.out.println("saveRepoPath :: "+saveRepoPath);
+		
+		String orgFileName  = file.getOriginalFilename();
+		
+		System.out.println("orgFileName :: "+orgFileName);
+		
+		Path destPath = saveRepoPath.resolve(orgFileName);
+		
+		System.out.println("destPath :: "+destPath);
+		
+	    File dest = destPath.toFile();
+		
+	    System.out.println("dest :: "+dest);
+	    
+	    file.transferTo(dest);
+	    
+		product.setFileName(orgFileName);
 		product.setManuDate(product.getManuDate().replace("-", ""));
 		productService.addProduct(product);
 		

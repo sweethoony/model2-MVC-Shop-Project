@@ -37,7 +37,7 @@
 		<td width="15" height="37">
 			<img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
 		</td>
-		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px;">
+		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="93%" class="ct_ttl01">

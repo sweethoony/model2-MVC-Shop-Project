@@ -1,6 +1,11 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +23,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -68,12 +75,54 @@ public class ProductController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
-	public String addProduct( @ModelAttribute("product") Product product, Model model) throws Exception {
+	public String addProduct( Model model, MultipartHttpServletRequest request) throws Exception {
 
 		System.out.println("/product/addProduct : GET");
 		//Business Logic
+		List<MultipartFile> fileList = request.getFiles("fileName");
 		
-		product.setManuDate(product.getManuDate().replace("-", ""));
+        String path = "C:\\Users\\jhyng\\git\\model2-MVC-Shop-Project\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles\\";
+		
+		Product product = new Product();
+		
+		List<String> fileNames = new ArrayList<>();
+		
+		for(MultipartFile multiFile : fileList) {
+			String orgFileName  = multiFile.getOriginalFilename();
+			long filesize = multiFile.getSize();
+			
+			System.out.println("orgFileName :: "+orgFileName);
+			System.out.println("filesize :: "+filesize);
+			
+			fileNames.add(orgFileName);
+			
+			String safeFile = path + orgFileName;
+			try {
+				multiFile.transferTo(new File(safeFile));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("fileNames"+fileNames);
+		
+		StringBuilder sb = new StringBuilder();
+		for (String name : fileNames) {
+		    sb.append(name).append(",");
+		}
+		System.out.println("sb :: "+sb);
+		if (sb.length() > 0) {
+		    sb.deleteCharAt(sb.length() - 1);
+		}
+		
+		String fileNamesCSV = sb.toString();	
+		
+	    product.setProdName(request.getParameter("prodName"));
+	    product.setProdDetail(request.getParameter("prodDetail"));
+	    product.setManuDate(request.getParameter("manuDate").replace("-",""));
+	    product.setPrice(Integer.parseInt(request.getParameter("price")));
+	    
+	    product.setFileName(fileNamesCSV);
+		
 		productService.addProduct(product);
 		
 		model.addAttribute("productVO", product);
@@ -123,13 +172,17 @@ public class ProductController {
 
 	            if (history.isEmpty()) {
 	                history = String.valueOf(prodNo); 
+	                System.out.println("/getProduct. history  1" + history);
 	            } else if (!Arrays.asList(history.split(":")).contains(String.valueOf(prodNo))) {
 	                history += ":" + prodNo;  
+	                System.out.println("/getProduct. history  2" + history);
 	            }
 	            Cookie historyCookie = new Cookie("history", history);
+	            historyCookie.setPath("/");
+	            System.out.println("/getProduct. historyCookie  1" + historyCookie);
 	            historyCookie.setMaxAge(60 * 60);
 	            response.addCookie(historyCookie);
-	            
+	            System.out.println("/getProduct. historyCookie  2" + historyCookie);
 	            return "forward:/product/getProduct.jsp";
 	        } else {
 

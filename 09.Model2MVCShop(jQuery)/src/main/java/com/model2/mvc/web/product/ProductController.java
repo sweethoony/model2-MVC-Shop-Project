@@ -78,7 +78,7 @@ public class ProductController {
 	public String addProduct( Model model, MultipartHttpServletRequest request) throws Exception {
 
 		System.out.println("/product/addProduct : GET");
-		//Business Logic
+
 		List<MultipartFile> fileList = request.getFiles("fileName");
 		
         String path = "C:\\Users\\jhyng\\git\\model2-MVC-Shop-Project\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles\\";
@@ -196,13 +196,68 @@ public class ProductController {
 
 	
 //	@RequestMapping("/updateProduct.do")
+//	@RequestMapping(value = "updateProduct", method =  RequestMethod.POST)
+//	public String updateProduct( @RequestParam("prodNo") int prodNo ,@ModelAttribute("product") Product product , Model model, HttpSession session ) throws Exception{
+//
+//		System.out.println("/product/updateProduct : POST");
+//		//Business Logic
+//		Product product1 = productService.getProduct(prodNo);
+//				
+//		productService.updateProduct(product1);
+//		
+//		session.setAttribute("product", product1);
+//		
+//		return "redirect:/product/getProduct?prodNo="+ prodNo;
+//	}
 	@RequestMapping(value = "updateProduct", method =  RequestMethod.POST)
-	public String updateProduct( @RequestParam("prodNo") int prodNo ,@ModelAttribute("product") Product product , Model model, HttpSession session ) throws Exception{
+	public String updateProduct( MultipartHttpServletRequest request , Model model, HttpSession session ) throws Exception{
 
 		System.out.println("/product/updateProduct : POST");
 		//Business Logic
+		List<MultipartFile> fileList = request.getFiles("fileName");
+		Product product = new Product();
+		String path = "C:\\Users\\jhyng\\git\\model2-MVC-Shop-Project\\09.Model2MVCShop(jQuery)\\src\\main\\webapp\\images\\uploadFiles\\";
+		List<String> fileNames = new ArrayList<>();
+		
+		for(MultipartFile multiFile : fileList) {
+			String orgFileName  = multiFile.getOriginalFilename();
+			long filesize = multiFile.getSize();
+			
+			System.out.println("orgFileName :: "+orgFileName);
+			System.out.println("filesize :: "+filesize);
+			
+			fileNames.add(orgFileName);
+			
+			String safeFile = path + orgFileName;
+			try {
+				multiFile.transferTo(new File(safeFile));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("fileNames"+fileNames);
+		
+		StringBuilder sb = new StringBuilder();
+		for (String name : fileNames) {
+		    sb.append(name).append(",");
+		}
+		System.out.println("sb :: "+sb);
+		if (sb.length() > 0) {
+		    sb.deleteCharAt(sb.length() - 1);
+		}
+		
+		String fileNamesCSV = sb.toString();
+		
+		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
+		
 		Product product1 = productService.getProduct(prodNo);
-				
+		
+		product1.setProdName(request.getParameter("prodName"));
+		product1.setProdDetail(request.getParameter("prodDetail"));
+		product1.setManuDate(request.getParameter("manuDate"));
+		product1.setPrice(Integer.parseInt(request.getParameter("price")));
+		product1.setFileName(fileNamesCSV);
+		
 		productService.updateProduct(product1);
 		
 		session.setAttribute("product", product1);

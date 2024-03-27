@@ -30,6 +30,7 @@ function fncAddProduct(){
 	var detail = $("input[name='prodDetail']").val();
 	var manuDate =$("input[name='manuDate']").val();
 	var price =$("input[name='price']").val();
+	var fileName = ${"input[name='fileName']"}.val();
 		
 	if(name == null || name.length<1){
 		alert("상품명은 반드시 입력하여야 합니다.");
@@ -47,11 +48,15 @@ function fncAddProduct(){
 		alert("가격은 반드시 입력하셔야 합니다.");
 		return;
 	}
+	if(fileName == null || fileName.length<1){
+		alert("1개 이상의 이미지를 등록해주셔야 합니다.")
+		return;
+	}
 		
 //	document.detailForm.action='/product/updateProduct';
 //	document.detailForm.submit();
 
-$("form").attr("method" , "POST").attr("action" , "/product/updateProduct").submit();
+$("form").attr("method" , "POST").attr("action" , "/product/updateProduct").attr("enctype", "multipart/form-data").submit();
 
 }
 
@@ -161,13 +166,12 @@ $(function(){
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">상품이미지</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<input	type="file" name="fileName" class="ct_input_g" 
-						style="width: 200px; height: 19px" maxLength="13" value="${prodVO.getFileName()}"/>
-		</td>
-	</tr>
+            <td width="104" class="ct_write">상품이미지</td>
+            <td bgcolor="D6D6D6" width="1"></td>
+            <td class="ct_write01">
+                <input type="file" multiple="multiple" name="fileName" class="ct_input_g" style="width: 200px; height: 19px" maxLength="13" />
+            </td>
+        </tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>

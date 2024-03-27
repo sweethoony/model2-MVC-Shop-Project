@@ -24,6 +24,30 @@
 	  			self.location = "../product/addProductView.jsp"
 	  		});
 	  	});
+
+	  	 $(document).ready(function() {
+	         var csvImageNames = "${productVO.fileName}"; 
+	         var imageNamesArray = csvImageNames.split(","); 
+
+	         var $imageTableBody = $("#imageTableBody");
+
+	         $.each(imageNamesArray, function(index, imageName) {
+	          
+	             var imagePath = "/images/uploadFiles/" + imageName;
+
+	             var $imageRow = $("<tr>");
+
+	             var $imageCell = $("<td>").attr("height", "26");
+
+	             var $imgElement = $("<img>").attr("src", imagePath);
+
+	             $imageCell.append($imgElement);
+
+	             $imageRow.append($imageCell);
+
+	             $imageTableBody.append($imageRow);
+	         });
+	     });
 	</script>
 
 </head>
@@ -104,18 +128,13 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">상품이미지</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<!-- 테이블 시작 -->
-			<table border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td height="26">
-						<img src="/images/uploadFiles/../../images/empty.GIF"/>
-					</td>
-				</tr>
-			</table>
-		</td>
+	    <td width="104" class="ct_write">상품이미지</td>
+	    <td bgcolor="D6D6D6" width="1"></td>
+	    <td class="ct_write01">
+	        <table border="0" cellspacing="0" cellpadding="0">
+	            <tbody id="imageTableBody"></tbody>
+	        </table>
+	    </td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>

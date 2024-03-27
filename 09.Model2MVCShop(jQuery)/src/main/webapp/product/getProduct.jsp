@@ -14,16 +14,39 @@
 
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
-	
+	 
 		$(function() {
 			 $( "td.ct_btn01:contains('구매')" ).on("click" , function() {
-				 self.location = "/purchase/addPurchase?prod_no=${prodVo.prodNo}"
+				 self.location = "/purchase/addPurchase?prod_no="+${prodVo.prodNo}
 			 });
 			 
 			 $( "td.ct_btn01:contains('이전')" ).on("click" , function() {
 				 self.location = "/product/listProduct?menu=search"
 			 });
 	 	});
+		 $(document).ready(function() {
+	         var csvImageNames = "${prodVo.fileName}"; 
+	         var imageNamesArray = csvImageNames.split(","); 
+
+	         var $imageTableBody = $("#imageTableBody");
+
+	         $.each(imageNamesArray, function(index, imageName) {
+	          
+	             var imagePath = "/images/uploadFiles/" + imageName;
+
+	             var $imageRow = $("<tr>");
+
+	             var $imageCell = $("<td>").attr("height", "26");
+
+	             var $imgElement = $("<img>").attr("src", imagePath);
+
+	             $imageCell.append($imgElement);
+
+	             $imageRow.append($imageCell);
+
+	             $imageTableBody.append($imageRow);
+	         });
+	     });
 	</script>
 </head> 	
 
@@ -80,13 +103,13 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">
-			상품이미지 <img 	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${prodVo.fileName}
-			<img src = "/images/uploadFiles/../../images/empty.GIF"/>
-		</td>
+	    <td width="104" class="ct_write">상품이미지</td>
+	    <td bgcolor="D6D6D6" width="1"></td>
+	    <td class="ct_write01">
+	        <table border="0" cellspacing="0" cellpadding="0">
+	            <tbody id="imageTableBody"></tbody>
+	        </table>
+	    </td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>

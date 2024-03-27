@@ -23,7 +23,7 @@ function fncAddProduct(){
 	var detail = $("input[name='prodDetail']").val();
 	var manuDate = $("input[name='manuDate']").val();
 	var price = $("input[name='price']").val();
-	
+	var fileName = ${"input[name='fileName']"}.val();
 	
 	if(name == null || name.length<1){
 		alert("상품명은 반드시 입력하여야 합니다.");
@@ -39,6 +39,10 @@ function fncAddProduct(){
 	}
 	if(price == null || price.length<1){
 		alert("가격은 반드시 입력하셔야 합니다.");
+		return;
+	}
+	if(fileName == null || fileName.length<1){
+		alert("1개 이상의 이미지를 등록해주셔야 합니다.")
 		return;
 	}
 

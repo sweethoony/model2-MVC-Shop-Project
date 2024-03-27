@@ -15,9 +15,6 @@
 <title>구매 목록조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="../javascript/common/fncGetList.js">
-</script>
 
 </head>
 
@@ -61,10 +58,7 @@
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
-	<%-- 
-	<%
-	if(resultPage.getTotalCount()==0){
-	%>--%>
+
 	<c:if test="${empty resultPage.totalCount}">
     <tr class="ct_list_pop">
         <td align="center" colspan="100%">구매 내역이 없습니다.</td>
@@ -121,22 +115,7 @@
 	<tr>
 		<td align="center">
 		   <input type="hidden" id="currentPage" name="currentPage" value=""/>
-			<%--<% if( resultPage.getCurrentPage() <= resultPage.getPageUnit() ){
-					◀ 이전
-			<% }else{ %>
-					<a href="javascript:fncGetPurchaseList('<%=resultPage.getCurrentPage()-1%>')">◀ 이전</a>
-			<% } %>
-
-			<%	for(int i=resultPage.getBeginUnitPage();i<= resultPage.getEndUnitPage() ;i++){	%>
-					<a href="javascript:fncGetPurchaseList('<%=i %>');"><%=i %></a>
-			<% 	}  %>
 	
-			<% if( resultPage.getEndUnitPage() >= resultPage.getMaxPage() ){ %>
-					이후 ▶
-			<% }else{ %>
-					<a href="javascript:fncGetPurchaseList('<%=resultPage.getEndUnitPage()+1%>')">이후 ▶</a>
-			<% } %>--%>
-			
 				<jsp:include page="../common/pageNavigator.jsp"/>	
     	</td>
 	</tr>

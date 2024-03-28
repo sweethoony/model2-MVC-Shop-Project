@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LikeMapper">
+ 	
+	<resultMap id="likeSelectMap" type="like">
+	    <!-- Type Handler를 명시적으로 설정 -->	   
+	    <result property="likeUserId.userId" column="LIKE_USERID" jdbcType="VARCHAR" />
+	    <result property="likeProdNo.prodNo" column="LIKE_PRODNO" jdbcType="NUMERIC" />
+	    <result property="likeProdNo.prodName" column="PROD_NAME" jdbcType="VARCHAR" />
+	    <result property="likeProdNo.price" column="PRICE" jdbcType="NUMERIC" />
+	    <result property="likeNo" column="LIKE_NO" jdbcType="VARCHAR" />
+	    <result property="pushLikeNo" column="PUSH_LIKE" jdbcType="CHAR" />
+	</resultMap>
+
+	<insert id="addLike" parameterType="like">
+	 	INSERT INTO LIKE_TABLE (LIKE_USERID, LIKE_PRODNO, LIKE_NO, PUSH_LIKE)
+	 	VALUES (
+	 	#{likeUserId.userId, jdbcType=VARCHAR},
+	 	#{likeProdNo.prodNo, jdbcType=NUMERIC},
+	 	seq_like_like_no.NEXTVAL, 
+	 	#{pushLikeNo, jdbcType=CHAR})
+	</insert>
+	 
+	<select id="countFindLike" resultType="int" parameterType="map">
+	    SELECT COUNT(*)
+	     FROM LIKE_TABLE
+	    WHERE LIKE_USERID = #{likeUserId} AND LIKE_PRODNO = #{likeProdNo}
+	</select>
+
+	<select id="countPushLike" resultType="int">
+	    SELECT COUNT(*)
+	     FROM LIKE_TABLE WHERE LIKE_PRODNO = #{likeProdNo.prodNo}
+	</select>
+
+	<delete id="deleteLikeUser" parameterType="map">
+	    DELETE FROM LIKE_TABLE
+	    WHERE LIKE_USERID = #{likeUserId.userId}
+	    AND LIKE_PRODNO = #{likeProdNo.prodNo}
+	</delete>
+
+	
+	<select id="getLikeList" resultMap="likeSelectMap">
+	  	SELECT *
+	  	FROM (SELECT inner_table.* , ROWNUM AS row_seq
+	  			FROM (SELECT LIKE_TABLE.LIKE_PRODNO, 
+				       COUNT(*) AS LIKE_COUNT, 
+				       PRODUCT.PROD_NAME,
+				       PRODUCT.PRICE
+				FROM LIKE_TABLE
+				JOIN PRODUCT ON LIKE_TABLE.LIKE_PRODNO = PRODUCT.PROD_NO
+				GROUP BY LIKE_TABLE.LIKE_PRODNO, 
+				         PRODUCT.PROD_NAME, 
+				         PRODUCT.PRICE
+				ORDER BY LIKE_COUNT DESC
+						 ) inner_table
+	  		WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	</select>
+	 
+	<select id="getWishLikeList" resultMap="likeSelectMap">
+    SELECT *
+    FROM (
+        SELECT inner_table.*, ROWNUM AS row_seq
+        FROM (
+            SELECT LIKE_TABLE.LIKE_PRODNO, 
+                   COUNT(*) AS LIKE_COUNT, 
+                   PRODUCT.PROD_NAME,
+                   PRODUCT.PRICE
+            FROM LIKE_TABLE
+            JOIN PRODUCT ON LIKE_TABLE.LIKE_PRODNO = PRODUCT.PROD_NO
+            WHERE LIKE_TABLE.LIKE_USERID = #{userId}
+            GROUP BY LIKE_TABLE.LIKE_PRODNO, 
+                     PRODUCT.PROD_NAME, 
+                     PRODUCT.PRICE
+            ORDER BY LIKE_COUNT DESC
+        ) inner_table
+        WHERE ROWNUM &lt;= #{search.endRowNum}
+    )
+    WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+</select>
+
+
+
+	<select id="getTotalCount" parameterType="search" resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM (SELECT LIKE_PRODNO, COUNT(*) AS LIKE_COUNT
+	  			FROM LIKE_TABLE
+	  			GROUP BY LIKE_PRODNO
+	  			ORDER BY LIKE_COUNT DESC ) countTable						
+	</select>
+	 
+	<select id="getWishTotalCount" resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM (SELECT LIKE_PRODNO FROM like_table 
+	  			WHERE like_userid = #{userId}
+	  			ORDER BY like_userid ) countTable						
+	</select>
+	 
+</mapper>

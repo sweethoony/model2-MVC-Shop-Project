@@ -55,27 +55,27 @@ public class ProductRestController {
 		return prodVo;
 	}
 
-	@RequestMapping(value = "json/updateProduct/{prodNo}", method = RequestMethod.GET)
-	public Product updateProductGet( @PathVariable int prodNo ) throws Exception{
-		
-		System.out.println("/product/json/updateProduct : GET");
-		
-		Product productNo = productService.getProduct(prodNo);
-		
-		return productNo;
-		
-	}
-	
+//	@RequestMapping(value = "json/updateProduct/{prodNo}", method = RequestMethod.GET)
+//	public Product updateProductGet( @PathVariable int prodNo ) throws Exception{
+//		
+//		System.out.println("/product/json/updateProduct : GET");
+//		
+//		Product productNo = productService.getProduct(prodNo);
+//		
+//		return productNo;
+//		
+//	}
+//	
 	@RequestMapping(value = "json/updateProduct/{prodNo}", method = RequestMethod.POST)
-	public Product updateProductPost( @PathVariable int prodNo ) throws Exception{
+	public Product updateProductPost( @PathVariable int prodNo, @RequestBody Product product ) throws Exception{
 		
 		System.out.println("/product/json/updateProduct : POST");
 		
-		Product product1 = productService.getProduct(prodNo);
+		 product = productService.getProduct(prodNo);
 		
-		productService.updateProduct(product1);
-		
-		return product1;
+		productService.updateProduct(product);
+		System.out.println("updateProductPost Json ::  " + product); 
+		return product;
 		
 	}
 }

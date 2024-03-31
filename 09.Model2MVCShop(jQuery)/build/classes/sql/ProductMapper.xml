@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductMapper">
+ 	
+ 	
+<resultMap id="productSelectMap" type="product">
+    <result property="prodNo" column="PROD_NO" jdbcType="NUMERIC"/>
+    <result property="prodName" column="PROD_NAME" jdbcType="VARCHAR"/>
+    <result property="prodDetail" column="PROD_DETAIL" jdbcType="VARCHAR"/>
+    <result property="manuDate" column="MANUFACTURE_DAY" jdbcType="VARCHAR"/>
+    <result property="price" column="PRICE" jdbcType="NUMERIC"/>
+    <result property="fileName" column="IMAGE_FILE" jdbcType="VARCHAR"/>
+    <result property="regDate" column="REG_DATE" jdbcType="DATE"/>
+    <result property="proTranCode" column="TRAN_STATUS_CODE" jdbcType="CHAR"/>
+</resultMap>
+
+	
+	
+	<insert 	id="insertProduct"		parameterType="product" >
+	 	insert 
+	 	into PRODUCT 
+	 	values (SEQ_PRODUCT_PROD_NO.NEXTVAL,
+	 	#{prodName:VARCHAR},
+	 	#{prodDetail:VARCHAR},
+	 	#{manuDate:VARCHAR},
+	 	#{price:NUMERIC},
+	 	#{fileName:VARCHAR},
+	 	SYSDATE)
+	 </insert>
+	 
+	 
+	 <select 	id="findProduct"	parameterType="int"	resultMap="productSelectMap">
+		SELECT DISTINCT
+    p.MANUFACTURE_DAY,
+    p.PROD_NAME,
+    p.PRICE,
+    p.IMAGE_FILE,
+    p.PROD_DETAIL,
+    p.PROD_NO,
+    p.REG_DATE,
+    NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
+    FROM
+    PRODUCT p
+    LEFT JOIN
+    TRANSACTION t ON p.PROD_NO = t.PROD_NO
+    WHERE
+    p.PROD_NO = #{prodNo}
+
+	 </select>
+	 
+	 
+	 <update	id="updateProduct"	parameterType="product" >
+	   update PRODUCT 
+	   <set> 
+	   PROD_NAME  =  #{prodName},
+	   PROD_DETAIL  =  #{prodDetail},
+	   MANUFACTURE_DAY  =  #{manuDate},
+	   PRICE  =  #{price}, 
+	   IMAGE_FILE  =  #{fileName} 	   
+	   </set>
+	   where PROD_NO  =  #{prodNo}
+	 </update>
+		 
+	
+	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT DISTINCT p.MANUFACTURE_DAY,
+	  					 	 						    p.PROD_NAME,
+	  					 	 						    p.PRICE,
+	  					 	 						    p.IMAGE_FILE,
+	  					 	 						    p.PROD_DETAIL,
+	  					 	 						    p.PROD_NO,
+	  					 	 						    p.REG_DATE,
+	  					 	 						    NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
+											FROM PRODUCT p
+											LEFT JOIN TRANSACTION t ON p.PROD_NO = t.PROD_NO
+											<if test="searchCondition != null">
+												<where>
+													<if test="searchCondition == 0 and searchKeyword !='' ">
+										 				p.PROD_NO = #{searchKeyword}
+													</if>
+													<if test="searchCondition == 1 and searchKeyword !='' ">
+										 				p.PROD_NAME = #{searchKeyword}
+													</if>
+													<if test="searchCondition == 2 and searchKeyword !='' ">
+														p.PRICE = #{searchKeyword}
+													</if>
+												</where>
+											</if>
+											order by p.PROD_NO ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	 </select>
+	 	
+	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  SELECT COUNT(*)
+	  	FROM   (	SELECT DISTINCT p.MANUFACTURE_DAY,
+	  					 	 						    p.PROD_NAME,
+	  					 	 						    p.PRICE,
+	  					 	 						    p.IMAGE_FILE,
+	  					 	 						    p.PROD_DETAIL,
+	  					 	 						    p.PROD_NO,
+	  					 	 						    p.REG_DATE,
+	  					 	 						    NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
+											FROM PRODUCT p
+											LEFT JOIN TRANSACTION t ON p.PROD_NO = t.PROD_NO
+						<if test="searchCondition != null">
+												<where>
+													<if test="searchCondition == 0 and searchKeyword !='' ">
+										 				p.PROD_NO = #{searchKeyword}
+													</if>
+													<if test="searchCondition == 1 and searchKeyword !='' ">
+										 				p.PROD_NAME = #{searchKeyword}
+													</if>
+													<if test="searchCondition == 2 and searchKeyword !='' ">
+														p.PRICE = #{searchKeyword}
+													</if>
+												</where>
+											</if>
+											order by p.PROD_NO ) countTable						
+	 </select>
+	 
+</mapper>

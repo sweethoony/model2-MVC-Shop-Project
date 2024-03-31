@@ -15,13 +15,7 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<%--<script type="text/javascript">
-	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-	function fncGetProductList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-	   	document.detailForm.submit();		
-	}
-	</script> --%>
+
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="../javascript/common/fncGetList.js">
 </script>
@@ -30,10 +24,13 @@
 		var search
 		var manage
 		
+		
 		 $(function() {
 			 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
 				 fncGetList(1);
 			 });			 
+			 
+			 
 			
 
 	$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
@@ -63,16 +60,64 @@
 						        "가격 : " + JSONData.price + "<br/>" +
 						        "상품 설명 : " + JSONData.prodDetail + "<br/>" +
 						        "이미지 : <br/>" + imageHtml + "  " + 
-						        "</h3>";
+						        "<button id='closeButton'>닫기</button>"+
+						        "</h3>";		
 
 						    $("h3").remove();
 						    $("#" + prodNo).html(displayValue);
+						    
+						    $("#closeButton").on("click", function() {
+						        $("#" + prodNo).html(""); 
+						    });
 						}
 
 			});
 
 			 });
 			});	
+		
+
+	    $(function() {
+	        var isLoading = false; // 데이터 로드 중 여부
+	        var isLastPage = false; // 마지막 페이지 여부
+
+	        $(window).scroll(function() {
+	            var search = $('table').data('search');
+	            var scrollHeight = $(document).height();
+	            var scrollPosition = $(window).height() + $(window).scrollTop();
+	            var currentPage = 1;
+	            if ((scrollHeight - scrollPosition) / scrollHeight === 0 && !isLoading && !isLastPage) {
+	                isLoading = true; 
+	                currentPage++; 
+
+	                $.ajax({
+	                    url: '/product/json/listProduct',
+	                    type: 'POST',
+	                    dataType: "json",
+	                    headers: {
+	                        "Accept": "application/json",
+	                        "Content-Type": "application/json"
+	                    },
+	                    data: JSON.stringify({
+	                        currentPage: currentPage
+	                        
+	                    }),
+	                    success: function(data) {
+	                        console.log(data);
+	                        if (data.length === 0) {
+	                            isLastPage = true;
+	                        } 
+	                    },
+	                    complete: function() {
+	                        isLoading = false; 
+	                    }
+	                });
+
+	            }
+	        });
+	    });
+	   
+	
 
 </script>
 
@@ -85,7 +130,7 @@
 <!-- <form name="detailFormProduct" action="/product/listProduct?menu=${requestScope.menu}" method="post"> -->
 
 <form name="detailFormProduct" >
-<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
+<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0" data-search = "${search }">
 	<tr>
 		<td width="15" height="37">
 			<img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
@@ -166,7 +211,7 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
     <tr>
-        <td colspan="11">전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
+        <td id = "page" colspan="11">전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
     </tr>
     <tr>
         <td class="ct_list_b" width="100">No</td>
@@ -251,7 +296,7 @@
         <td align="center">
 		   <input type="hidden" id="currentPage" name="currentPage" value=""/>
 
-			<jsp:include page="../common/pageNavigator.jsp"/>	
+			 <jsp:include page="../common/pageNavigator.jsp"/>	
 			
     	</td>
     </tr>

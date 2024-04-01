@@ -20,10 +20,7 @@
 	<script type="text/javascript" src="../javascript/common/fncGetList.js">
 </script>
 <script type="text/javascript">
-		var menu = ${requestScope.menu}
-		var search
-		var manage
-		
+
 		
 		 $(function() {
 			 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
@@ -77,47 +74,7 @@
 			});	
 		
 
-	    $(function() {
-	        var isLoading = false; // 데이터 로드 중 여부
-	        var isLastPage = false; // 마지막 페이지 여부
-
-	        $(window).scroll(function() {
-	            var search = $('table').data('search');
-	            var scrollHeight = $(document).height();
-	            var scrollPosition = $(window).height() + $(window).scrollTop();
-	            var currentPage = 1;
-	            if ((scrollHeight - scrollPosition) / scrollHeight === 0 && !isLoading && !isLastPage) {
-	                isLoading = true; 
-	                currentPage++; 
-
-	                $.ajax({
-	                    url: '/product/json/listProduct',
-	                    type: 'POST',
-	                    dataType: "json",
-	                    headers: {
-	                        "Accept": "application/json",
-	                        "Content-Type": "application/json"
-	                    },
-	                    data: JSON.stringify({
-	                        currentPage: currentPage
-	                        
-	                    }),
-	                    success: function(data) {
-	                        console.log(data);
-	                        if (data.length === 0) {
-	                            isLastPage = true;
-	                        } 
-	                    },
-	                    complete: function() {
-	                        isLoading = false; 
-	                    }
-	                });
-
-	            }
-	        });
-	    });
 	   
-	
 
 </script>
 
@@ -127,9 +84,9 @@
 
 <div style="width:98%; margin-left:10px;">
 
-<!-- <form name="detailFormProduct" action="/product/listProduct?menu=${requestScope.menu}" method="post"> -->
+<!--<form name="detailFormProduct" action="/product/listProduct?menu=${requestScope.menu}" method="post">  --> 
 
-<form name="detailFormProduct" >
+ <form name="detailFormProduct" >
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0" data-search = "${search }">
 	<tr>
 		<td width="15" height="37">
@@ -225,6 +182,7 @@
         <td class="ct_list_b">등록일</td>
         <td class="ct_line02"></td>
         <td class="ct_list_b">현재상태</td>
+        
     </tr>
     <tr>
         <td colspan="11" bgcolor="808285" height="1"></td>

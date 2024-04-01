@@ -35,8 +35,8 @@
 
 <div style="width: 98%; margin-left: 10px;">
 
-<!--  <form name="detailFormWhisLike" action="/like/wishListLike" method="post">-->
-<form name="detailFormWhisLike">
+<!-- <form name="detailFormWhisLike" action="/like/wishListLike" method="post">-->
+ <form name="detailFormWhisLike">
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
 		<td width="15" height="37"><img src="/images/ct_ttl_img01.gif"width="15" height="37"></td>

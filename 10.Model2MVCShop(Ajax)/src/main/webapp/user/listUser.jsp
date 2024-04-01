@@ -160,7 +160,7 @@
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
-		
+		 
 	<c:set var="i" value="0" />
 	<c:forEach var="user" items="${list}">
 		<c:set var="i" value="${ i+1 }" />

@@ -267,14 +267,16 @@ public class ProductController {
 	
 //	@RequestMapping("/listProduct.do")
 	@RequestMapping(value = "listProduct")
-	public String listProduct(@ModelAttribute("search") Search search, Model model, @RequestParam("menu") String menu) throws Exception {
+	public String listProduct(@ModelAttribute("search") Search search, Model model, @RequestParam("menu") String menu, HttpSession session) throws Exception {
 
 	    System.out.println("/product/listProduct : GET/POST");
-
+	    User user = ((User) session.getAttribute("user"));
 	    if (search.getCurrentPage() == 0) {
 	        search.setCurrentPage(1);
 	    }
 	    System.out.println("search" + search);
+	    System.out.println("menu" + menu);
+	    System.out.println("user" + user);
 	    search.setPageSize(pageSize);
 	    search.setSearchCondition(search.getSearchCondition());
 	    search.setSearchKeyword("-" + search.getSearchKeyword() + "-");
@@ -298,6 +300,7 @@ public class ProductController {
 	    model.addAttribute("list", productList); 
 	    model.addAttribute("resultPage", resultPage);
 	    model.addAttribute("search", search);
+	    model.addAttribute("user", user);
 
 	    return "forward:/product/listProduct.jsp";
 	}

@@ -11,6 +11,7 @@
 	    <result property="likeUserId.userId" column="LIKE_USERID" jdbcType="VARCHAR" />
 	    <result property="likeProdNo.prodNo" column="LIKE_PRODNO" jdbcType="NUMERIC" />
 	    <result property="likeProdNo.prodName" column="PROD_NAME" jdbcType="VARCHAR" />
+	   	<result property="likeProdNo.fileName" column="IMAGE_FILE" jdbcType="VARCHAR" />    
 	    <result property="likeProdNo.price" column="PRICE" jdbcType="NUMERIC" />
 	    <result property="likeNo" column="LIKE_NO" jdbcType="VARCHAR" />
 	    <result property="pushLikeNo" column="PUSH_LIKE" jdbcType="CHAR" />
@@ -49,12 +50,14 @@
 	  			FROM (SELECT LIKE_TABLE.LIKE_PRODNO, 
 				       COUNT(*) AS LIKE_COUNT, 
 				       PRODUCT.PROD_NAME,
-				       PRODUCT.PRICE
+				       PRODUCT.PRICE,
+				       PRODUCT.IMAGE_FILE
 				FROM LIKE_TABLE
 				JOIN PRODUCT ON LIKE_TABLE.LIKE_PRODNO = PRODUCT.PROD_NO
 				GROUP BY LIKE_TABLE.LIKE_PRODNO, 
-				         PRODUCT.PROD_NAME, 
-				         PRODUCT.PRICE
+				        		   PRODUCT.PROD_NAME, 
+				        		   PRODUCT.PRICE,
+				        		   PRODUCT.IMAGE_FILE
 				ORDER BY LIKE_COUNT DESC
 						 ) inner_table
 	  		WHERE ROWNUM &lt;= #{search.endRowNum} )

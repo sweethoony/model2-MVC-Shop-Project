@@ -45,7 +45,7 @@
     font-size: 50px;
     line-height: 60px;
 }
-#insAfter > ul {
+#v-banner > ul {
   width: 2500px;
   padding: 0;
   margin: 0 auto;
@@ -53,7 +53,7 @@
   overflow-x: hidden; 
 }
 
-#insAfter ul li {
+#v-banner ul li {
   font-size: 24px;
   border: 1px solid #000;
   list-style: none;
@@ -63,7 +63,8 @@
   white-space: nowrap;
 }
 
-div#insAfter {
+div#v-banner {
+  border: 1px solid black;
   margin: 20px auto;
   margin-right: 10px;
   width: 800px;
@@ -79,6 +80,41 @@ div#insAfter {
 
 aside{
 	position: stic
+}
+
+#rcmd-prod{
+	border: 0.5px solid black;
+	text-align: center;
+}
+
+.product-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto; 
+    white-space: nowrap;
+}
+
+.product-list li {
+    display: inline-block;
+    margin-right: 18px; 
+}
+
+.product-list img {
+    width: auto;
+    height: auto; 
+}
+
+
+#rcmd-list {
+    position: relative;
+    overflow: hidden;
+    width: auto; 
+    white-space: nowrap;
+}
+
+#rcmd-list ul{
+	overflow: hidden;
 }
 
 
@@ -103,13 +139,75 @@ aside{
 			});
 		});
 		
-		setInterval(fnSlide, 3000);
+		setInterval(fnSlide, 6000);
+		
 		function fnSlide() {
-		  $("#insAfter ul").animate({ "margin-left": "-800px" }, 1200, function () {
-		    $("#insAfter ul").css({ "margin-left": "-8px" });
-		    $("#insAfter ul li:first-child").insertAfter("#insAfter ul li:last-child");
+		  $("#v-banner ul").animate({ "margin-left": "-800px" }, 1200, function () {
+		    $("#v-banner ul").css({ "margin-left": "-8px" });
+		    $("#v-banner ul li:first-child").insertAfter("#v-banner ul li:last-child");
 		  });
 		};
+
+		setInterval(plSlide, 6000);
+		
+		function plSlide() {
+			 $("#rcmd-list ul").animate({"margin-left": "-200px"}, 1200, function(){
+			        $("#rcmd-list ul").css({"margin-left": "-3px"});
+			        $("#rcmd-list ul li:first-child").insertAfter("#rcmd-list ul li:last-child"); 
+			    });
+			};
+		
+		$(document).ready(function() {
+		    function getListLike() {
+		        $.ajax({
+		            url: '/like/json/listLike',
+		            type: 'POST',
+		            contentType: 'application/json',
+		            data: JSON.stringify({
+		                "currentPage": 1,
+		                "searchCondition": null,
+		                "searchKeyword": null,
+		                "pageSize": 0,
+		                "endRowNum": 0,
+		                "startRowNum": 0
+		            }),
+		            success: function(response) {
+		                var productList = $(".product-list");
+		                productList.empty(); 
+
+		                $.each(response, function(index, item) {
+		                    var imagePaths = item.likeProdNo.fileName.split(',');
+							
+		                    $.each(imagePaths, function(i, imagePath) {
+		                        var listItem = $("<li></li>");
+		                        var figure = $("<figure></figure>");
+		                        var href =$(' <a href="/product/getProduct?prodNo='+item.likeProdNo.prodNo+'&menu=search"></a>')
+		                        var img = $("<img>").attr({
+		                            src: "images/uploadFiles/" + imagePath.trim(),
+		                            alt: item.likeProdNo.prodName
+		                        }).css({
+		                            width: "200px",
+		                            height: "auto" 
+		                        });
+		                        var div = $("<div>", {class: "image-text", text: item.likeProdNo.prodName});
+		                        var priceDiv = $("<div>",{class:"price-text",text:item.likeProdNo.price});
+		                        href.append(img);
+		                        href.append(div);
+		                        href.append(priceDiv);
+		                        figure.append(href);
+		                        listItem.append(figure);
+		                        productList.append(listItem);
+		                        
+		                    });
+		                });
+		            }
+		        });
+		    }
+
+		    getListLike();
+		});
+
+
 
 	</script>	
 	
@@ -144,16 +242,7 @@ aside{
 
   <div class="container">
     <div class="row">
-        <main class="col-md-9">
-            <div id="insAfter">
-                <ul>
-                    <li><img src="images/uploadFiles/AHlbAAAAtBqyWAAA.jpg" width="750" height="399" ></li>
-                    <li><img src="images/uploadFiles/ak47Grand.jpg" width="750" height="399" ></li>
-                    <li><img src="images/uploadFiles/AHlbAAAAve1WwgAC.jpg" width="750" height="399" ></li>
-                </ul>
-            </div>
-        </main>
-        <aside class="col-md-3"style="position: sticky; top: 20px;">
+     <aside class="col-md-3"style="position: sticky; top: 20px;">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <i class="glyphicon glyphicon-heart"></i> 회원관리
@@ -195,6 +284,31 @@ aside{
                 </ul>
             </div>
         </aside>
+        
+        <main class="col-md-9">
+            <div id="v-banner">
+                <ul>
+                    <li><img src="images/uploadFiles/AHlbAAAAtBqyWAAA.jpg" width="750" height="399" ></li>
+                    <li><img src="images/uploadFiles/ak47Grand.jpg" width="750" height="399" ></li>
+                    <li><img src="images/uploadFiles/AHlbAAAAve1WwgAC.jpg" width="750" height="399" ></li>
+                </ul>
+            </div>
+            
+            <div id = "rcmd-prod">
+            		<h3>인기 상품</h3>
+            		<div id = "rcmd-list">
+            			<ul class = "product-list"></ul>
+            		</div>
+            </div>
+            
+            <div id = "new-prod">
+            		<h3>최신 상품</h3>
+            		<div id = "new-list">
+            			<ul class = "newProduct-list"></ul>
+            		</div>
+            </div>
+        </main>
+        
     </div>
 </div>
 

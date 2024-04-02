@@ -139,19 +139,23 @@ public class ProductController {
 	    // Business Logic
 	    Product prodVo = productService.getProduct(prodNo);
 	    System.out.println("/getProduct.Product" + prodVo);
+	    System.out.println("/getProduct.session" + session);
+	    
+	    if(session != null && session.equals("user")) {
+	    	System.out.println("/getProduct. session != null ");
 	    String userId = ((User) session.getAttribute("user")).getUserId();
 
 	    int pushLikeNo = likeService.getLike(userId, prodNo);
 
 	    int countLikeProd = likeService.countLikeProd(prodNo);
 	    System.out.println("/getProduct.countLikeProd" + pushLikeNo);
-	    System.out.println("/getProduct.like" + countLikeProd);
+	    System.out.println("/getProduct.like 1 " + countLikeProd);
 	    // Model °ú View ¿¬°á
 	    model.addAttribute("countLikeProd", countLikeProd);
 	    model.addAttribute("pushLikeNo1", pushLikeNo);
 	    model.addAttribute("prodVo", prodVo);
 	    model.addAttribute("menu", menu);
-	    
+	  
 	    System.out.println("/getProduct. menu  1"  + menu);
 	    if (menu != null && !menu.isEmpty()) {
 	    	 System.out.println("/getProduct. menu  2" + menu);
@@ -193,7 +197,18 @@ public class ProductController {
 	        return "forward:/product/updateProduct.jsp";
 	    }
 	}
-
+else {
+	System.out.println("/getProduct.session = null");
+	    int countLikeProd = likeService.countLikeProd(prodNo);
+	    System.out.println("/getProduct.like 2" + countLikeProd);
+	    
+	    model.addAttribute("countLikeProd", countLikeProd);
+	    model.addAttribute("prodVo", prodVo);
+	    model.addAttribute("menu", menu);
+	    
+	    return "forward:/product/getProduct.jsp";
+		}
+	}
 	
 //	@RequestMapping("/updateProduct.do")
 //	@RequestMapping(value = "updateProduct", method =  RequestMethod.POST)

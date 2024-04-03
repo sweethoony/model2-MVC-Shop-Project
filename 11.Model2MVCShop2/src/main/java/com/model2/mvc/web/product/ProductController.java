@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -285,6 +286,9 @@ else {
 	public String listProduct(@ModelAttribute("search") Search search, Model model, @RequestParam("menu") String menu) throws Exception {
 
 	    System.out.println("/product/listProduct : GET/POST");
+	    
+	    System.out.println("/product/listProduct  menu :: "+ menu);
+	    
 
 	    if (search.getCurrentPage() == 0) {
 	        search.setCurrentPage(1);
@@ -294,27 +298,36 @@ else {
 	    search.setSearchCondition(search.getSearchCondition());
 	    search.setSearchKeyword("-" + search.getSearchKeyword() + "-");
 	    search.setSearchKeyword(search.getSearchKeyword().replace("-", ""));
-	    Map<String, Object> map = productService.getProductList(search);
-
-	    Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit, pageSize);
-
-	    System.out.println(resultPage);
-	    System.out.println("listProduct  map" + map);
-
-	    List<Product> productList = (List<Product>) map.get("list");
-	    for (Product product : productList) {
-	        String proTranCode = product.getProTranCode();
-	        if (proTranCode != null) {
-	            product.setProTranCode(proTranCode.trim());
-	        }
+	    
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    
+	    if(menu.equals("search") || menu.equals("manager")) {
+	    	map = productService.getProductList(search);
 	    }
-
-	    model.addAttribute("menu", menu);
-	    model.addAttribute("list", productList); 
-	    model.addAttribute("resultPage", resultPage);
-	    model.addAttribute("search", search);
-
-	    return "forward:/product/listProduct.jsp";
+	    else if(menu.equals("newProd")){
+	    	
+	    	 map = productService.getNewProductList(search);
+	    }
+	    System.out.println("/product/listProduct  map ::  " + map);
+		    Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit, pageSize);
+	
+		    System.out.println(resultPage);
+		    System.out.println("listProduct  map" + map);
+	
+		    List<Product> productList = (List<Product>) map.get("list");
+		    for (Product product : productList) {
+		        String proTranCode = product.getProTranCode();
+		        if (proTranCode != null) {
+		            product.setProTranCode(proTranCode.trim());
+		        }
+		    }
+		    model.addAttribute("menu", menu);
+		    model.addAttribute("list", productList); 
+		    model.addAttribute("resultPage", resultPage);
+		    model.addAttribute("search", search);
+	
+		    return "forward:/product/listProduct.jsp";
+	   
 	}
 
 }

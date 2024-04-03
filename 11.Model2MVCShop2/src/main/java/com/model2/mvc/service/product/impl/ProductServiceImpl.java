@@ -58,4 +58,18 @@ public class ProductServiceImpl implements ProductService{
 	public void updateProduct(Product product) throws Exception{
 		productDao.updateProduct(product);
 	}
+
+	@Override
+	public Map<String, Object> getNewProductList(Search search) throws Exception {
+		List<Product> list = productDao.getNewProductList(search);
+		int totalCount = productDao.getTotalCount(search);
+		System.out.println("getProductList list : " + list);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list );
+		map.put("totalCount", new Integer(totalCount));
+		
+		System.out.println("getNewProductList  map"+map);	
+		return map;
+	}
 }

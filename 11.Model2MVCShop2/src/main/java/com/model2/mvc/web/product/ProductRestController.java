@@ -1,5 +1,6 @@
 package com.model2.mvc.web.product;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -94,13 +95,23 @@ public class ProductRestController {
 		
 	}
 	
-	@RequestMapping(value = "json/listProduct", method = RequestMethod.POST)
-	public List listProduct(@RequestBody Search search) throws Exception{
+	@RequestMapping(value = "json/listProduct/{menu}", method = RequestMethod.POST)
+	public List listProduct(@RequestBody Search search, @PathVariable String menu) throws Exception{
 		
 		System.out.println("/product/json/listProduct : POST");
 		
 		search.setPageSize(pageSize);
-		Map<String, Object> map = productService.getProductList(search);
+		
+		Map<String, Object> map =  new HashMap<String, Object>();
+		
+		if(menu.equals("search") || menu.equals("manager")) {
+		map = productService.getProductList(search);
+		}
+		else if(menu.equals("newProd")){
+	    	
+	    	 map = productService.getNewProductList(search);
+	    }
+		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit, pageSize); 
 		List<Product> productList = (List<Product>) map.get("list");
 		 for (Product product : productList) {

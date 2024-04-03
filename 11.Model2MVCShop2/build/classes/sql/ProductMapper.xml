@@ -125,4 +125,21 @@
 											order by p.PROD_NO ) countTable						
 	 </select>
 	 
+	 <select  id="getNewProductList"  parameterType="search"	resultMap="productSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT DISTINCT p.MANUFACTURE_DAY,
+	  					 	 						    p.PROD_NAME,
+	  					 	 						    p.PRICE,
+	  					 	 						    p.IMAGE_FILE,
+	  					 	 						    p.PROD_DETAIL,
+	  					 	 						    p.PROD_NO,
+	  					 	 						    p.REG_DATE,
+	  					 	 						    NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
+											FROM PRODUCT p
+											LEFT JOIN TRANSACTION t ON p.PROD_NO = t.PROD_NO
+											order by p.REG_DATE desc ) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	 </select>
 </mapper>

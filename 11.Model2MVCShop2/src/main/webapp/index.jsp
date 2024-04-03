@@ -117,6 +117,48 @@ aside{
 	overflow: hidden;
 }
 
+.newProduct-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto; 
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between;
+}
+
+.newProduct-list li {
+    display: inline-block;
+    margin-right: 18px; 
+    width: calc(33.33% - 20px);
+    margin-bottom: 20px;
+}
+
+.newProduct-list img {
+    width: 100%;
+    height: auto; 
+}
+#new-prod{
+	border: 0.5px solid black;
+	text-align: center;
+}
+#new-prod {
+    width: 50%;
+    float: left; 
+    overflow: hidden; 
+}
+
+#news{
+	border: 0.5px solid black;
+	text-align: center;
+}
+#news {
+    width: 50%;
+    float: right; 
+    overflow: hidden; 
+}
+
 
 	</style>
    	
@@ -177,13 +219,13 @@ aside{
 
 		                $.each(response, function(index, item) {
 		                    var imagePaths = item.likeProdNo.fileName.split(',');
-							
-		                    $.each(imagePaths, function(i, imagePath) {
+		                    var firstImagePath = imagePaths[0];
+		                    
 		                        var listItem = $("<li></li>");
 		                        var figure = $("<figure></figure>");
 		                        var href =$(' <a href="/product/getProduct?prodNo='+item.likeProdNo.prodNo+'&menu=search"></a>')
 		                        var img = $("<img>").attr({
-		                            src: "images/uploadFiles/" + imagePath.trim(),
+		                            src: "images/uploadFiles/" + firstImagePath.trim(),
 		                            alt: item.likeProdNo.prodName
 		                        }).css({
 		                            width: "200px",
@@ -198,15 +240,62 @@ aside{
 		                        listItem.append(figure);
 		                        productList.append(listItem);
 		                        
-		                    });
+		                });
+		            }
+		        });
+		    }
+		    getListLike();
+		});
+		
+		$(document).ready(function() {
+		    function getNewList() {
+		        $.ajax({
+		            url: '/product/json/listProduct/newProd',
+		            type: 'POST',
+		            contentType: 'application/json',
+		            data: JSON.stringify({
+		                "currentPage": 1,
+		                "searchCondition": null,
+		                "searchKeyword": null,
+		                "pageSize": 0,
+		                "endRowNum": 0,
+		                "startRowNum": 0
+		            }),
+		            success: function(response) {
+		                var prodNewtList = $(".newProduct-list");
+		                prodNewtList.empty(); 
+
+		                $.each(response, function(index, item) {
+		                    var imgPaths = item.fileName.split(',');
+		                    var firstImgPath = imgPaths[0];
+							
+		                        var nListItem = $("<li></li>");
+		                        var nFigure = $("<figure></figure>");
+		                        var nHref =$(' <a href="/product/getProduct?prodNo='+item.prodNo+'&menu=search"></a>');
+		                        var nImg = $("<img>").attr({
+		                        	src: "images/uploadFiles/" + firstImgPath.trim(),
+		                            alt: item.prodName
+		                        }).css({
+		                            width: "auto",
+		                            height: "100px" 
+		                        });
+		                        var nDiv = $("<div>", {class: "image-text", text: item.prodName});
+		                        var nPriceDiv = $("<div>",{class:"price-text",text:item.price});
+		                        
+		                        nHref.append(nImg);
+		                        nHref.append(nDiv);
+		                        nHref.append(nPriceDiv);
+		                        nFigure.append(nHref);
+		                        nListItem.append(nFigure);
+		                        prodNewtList.append(nListItem);
+		                        
 		                });
 		            }
 		        });
 		    }
 
-		    getListLike();
+		    getNewList();
 		});
-
 
 
 	</script>	
@@ -306,6 +395,11 @@ aside{
             		<div id = "new-list">
             			<ul class = "newProduct-list"></ul>
             		</div>
+            </div>
+            
+            <div id="news">
+            	<h3>공지사항</h3>
+            		<ul class = "news-list"></ul>
             </div>
         </main>
         

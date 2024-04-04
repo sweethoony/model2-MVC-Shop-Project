@@ -6,11 +6,9 @@
 
 
 <!-- ToolBar Start /////////////////////////////////////-->
-<div class="navbar  navbar-inverse navbar-fixed-top">
+<nav class="navbar  navbar-default">
 	
 	<div class="container">
-	       
-		<a class="navbar-brand" href="/index.jsp">Model2 MVC Shop</a>
 		
 		<!-- toolBar Button Start //////////////////////// -->
 		<div class="navbar-header">
@@ -44,7 +42,7 @@
 	                         </c:if>
 	                         
 	                         <li class="divider"></li>
-	                         <li><a href="#">etc...</a></li>
+	                         <li><a href="#">etc..</a></li>
 	                     </ul>
 	                 </li>
 	                 
@@ -83,23 +81,47 @@
 	                     </ul>
 	                 </li>
 	                 
-	                 <li><a href="#">etc...</a></li>
+	                 <li><a href="#">인기 상품</a></li>
+	                 
+	                 <li><a href="#">이벤트</a></li>
 	             </ul>
 	             
+	             <c:if test="${empty user }">
+	             <ul class="nav navbar-nav navbar-right">
+                     <li><a href="#">회원가입</a></li>
+                     <li><a href="#">로 그 인</a></li>
+                    </c:if>
+                     
+	              <c:if test="${ ! empty user }">
 	             <ul class="nav navbar-nav navbar-right">
 	                <li><a href="#">로그아웃</a></li>
 	            </ul>
+	            </c:if>
+	            
 		</div>
 		<!-- dropdown hover END -->	       
 	    
 	</div>
-</div>
+</nav>
 		<!-- ToolBar End /////////////////////////////////////-->
  	
    	
    	
    	<script type="text/javascript">
-	
+   	//=====login
+   	$( function() {
+		//==> 추가된부분 : "addUser"  Event 연결
+		$("a[href='#' ]:contains('로 그 인')").on("click" , function() {
+			self.location = "/user/login"
+		});
+	});
+  //============= 회원원가입 화면이동 =============
+	$( function() {
+		//==> 추가된부분 : "addUser"  Event 연결
+		$("a[href='#' ]:contains('회원가입')").on("click" , function() {
+			self.location = "/user/addUser"
+		});
+	});
 		//============= logout Event  처리 =============	
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)

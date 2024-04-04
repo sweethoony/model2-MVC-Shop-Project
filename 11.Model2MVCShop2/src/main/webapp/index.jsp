@@ -6,9 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- ///////////////////////////// 로그인시 Forward  /////////////////////////////////////// -->
- <c:if test="${ ! empty user }">
- 	<jsp:forward page="main.jsp"/>
- </c:if>
+ 
  <!-- //////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
@@ -40,11 +38,33 @@
 	line-height: 30px;
 }
 	
-	.header {
-    text-align: center;
-    font-size: 50px;
-    line-height: 60px;
+.header {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
 }
+#headerName {
+	font-size : 40px;
+    display: block;
+    
+    margin-left: 90px; 
+}
+
+#searchForm{
+	display: block;
+	margin-left: 30px;
+}
+
+#btn-search{
+	margin-left: 10px;
+}
+
+input[type="text"] {
+    width: 300px;
+    height: 40px; 
+    font-size: 16px;
+}
+
 #v-banner > ul {
   width: 2500px;
   padding: 0;
@@ -181,6 +201,31 @@ aside{
 			});
 		});
 		
+		$(document).ready(function() {
+		    $('#searchForm').submit(function(event) {
+		        event.preventDefault();
+		        
+		        var searchText = $('#searchInput').val();
+		        
+		        var searchUrl = 'product/listProduct?menu=search';
+		        
+		        var searchData = {
+		            "currentPage": 1,
+		            "searchCondition": 1,
+		            "searchKeyword": searchText, // 검색어 설정
+		            "pageSize": 0,
+		            "endRowNum": 0,
+		            "startRowNum": 0
+		        };
+
+		        $.post(searchUrl, searchData, function(response) {
+		            console.log(response);
+		            // 여기서 서버 응답을 받아서 적절한 처리를 수행하세요
+		            window.location.href = '/product/listProduct.jsp';
+		        });
+		    });
+		});
+
 		setInterval(fnSlide, 6000);
 		
 		function fnSlide() {
@@ -303,30 +348,21 @@ aside{
 </head>
 
 <body>
-    <div class="header">후니#</div>
+    <header class="header" >
+   		 <a id = "headerName" href="/index.jsp">후니네 반찬</a>
+   		
+   		<form id="searchForm"method="post">
+   			<input type="text" autocomplete="off" placeholder="원하시는 상품명을 입력하세요.">
+   			
+   			<button id="btn-search"title="검색하기">
+   				<img src="images/header-sch.png" alt = "검색">
+   			</button>
+   		</form> 
+		
+    </header>
     
     <!-- ToolBar Start /////////////////////////////////////-->
-    <nav class="navbar  navbar-default">
-        <div class="container">
-            <a class="navbar-brand" href="#">후니#</a>
-            <!-- toolBar Button Start //////////////////////// -->
-            <div class="navbar-header">
-                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#target">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- toolBar Button End //////////////////////// -->
-            <div class="collapse navbar-collapse"  id="target">
-                 <ul class="nav navbar-nav navbar-right">
-                     <li><a href="#">회원가입</a></li>
-                     <li><a href="#">로 그 인</a></li>
-                </ul>
-           </div>
-        </div>
-    </nav>
+    	<jsp:include page="/layout/toolbar.jsp" />
 
 
   <div class="container">

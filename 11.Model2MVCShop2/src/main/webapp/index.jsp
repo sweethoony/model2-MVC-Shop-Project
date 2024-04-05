@@ -202,29 +202,53 @@ aside{
 		});
 		
 		$(document).ready(function() {
-		    $('#searchForm').submit(function(event) {
-		        event.preventDefault();
+		    $('#searchForm').submit(function(event) { // 폼 제출 이벤트에 대한 핸들러를 수정합니다.
+		        event.preventDefault(); // 폼 제출 기본 동작을 막습니다.
 		        
 		        var searchText = $('#searchInput').val();
 		        
-		        var searchUrl = 'product/listProduct?menu=search';
-		        
-		        var searchData = {
-		            "currentPage": 1,
-		            "searchCondition": 1,
-		            "searchKeyword": searchText, // 검색어 설정
-		            "pageSize": 0,
-		            "endRowNum": 0,
-		            "startRowNum": 0
-		        };
+		        $.ajax({
+		            url: "/product/json/listProduct/search", 
+		            method: "POST",
+		            dataType: "json",
+		            contentType: "application/json", // 데이터 전송 형식을 JSON으로 지정합니다.
+		            data: JSON.stringify({
+		                "currentPage": 1,
+		                "searchCondition": 1,
+		                "searchKeyword": searchText,
+		                "pageSize": 0,
+		                "endRowNum": 0,
+		                "startRowNum": 0
+		            }),
+		            success: function(data, status) {
+		                console.log(data);
+		                console.log(status);
+		                
+		                var displayValue = ""; 
+		                $.each(data, function(index, product) { 
+		                    var productInfo = "<div class='product'>" +
+		                        "<h6>" +
+		                        "상품명 : " + product.prodName + "<br>" +
+		                        "상품상세정보 : " + product.prodDetail + "<br>" +
+		                        "제조일자 : " + product.manuDate + "<br>" +
+		                        "가격 : " + product.price + "<br>" +
+		                        "종류 : " + product.category + "<br>" +
+		                        "</h6>" +
+		                        "</div>";
+		                    displayValue += productInfo; 
+		                    console.log(productInfo); 
+		                });
+		                
+		                $('#mainContainer').empty();
+		                $('#mainContainer').html(displayValue);
+		            }
 
-		        $.post(searchUrl, searchData, function(response) {
-		            console.log(response);
-		            // 여기서 서버 응답을 받아서 적절한 처리를 수행하세요
-		            window.location.href = '/product/listProduct.jsp';
+
 		        });
 		    });
 		});
+
+
 
 		setInterval(fnSlide, 6000);
 		
@@ -352,7 +376,7 @@ aside{
    		 <a id = "headerName" href="/index.jsp">후니네 반찬</a>
    		
    		<form id="searchForm"method="post">
-   			<input type="text" autocomplete="off" placeholder="원하시는 상품명을 입력하세요.">
+   			<input id= "searchInput" type="text" autocomplete="off" placeholder="원하시는 상품명을 입력하세요.">
    			
    			<button id="btn-search"title="검색하기">
    				<img src="images/header-sch.png" alt = "검색">
@@ -410,7 +434,8 @@ aside{
             </div>
         </aside>
         
-        <main class="col-md-9">
+        
+        <main id = "mainContainer" class="col-md-9">
             <div id="v-banner">
                 <ul>
                     <li><img src="images/uploadFiles/AHlbAAAAtBqyWAAA.jpg" width="750" height="399" ></li>

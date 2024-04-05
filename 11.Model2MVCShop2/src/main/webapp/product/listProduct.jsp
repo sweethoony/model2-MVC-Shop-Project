@@ -21,59 +21,46 @@
 </script>
 <script type="text/javascript">
 
+						
+		
 		
 		 $(function() {
-			 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
-				 fncGetList(1);
-			 });			 
 			 
+			 var searchText = $('#searchInput').val();
 			 
-			
-
-	$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
-
-		 var prodNo = $(this).data("prodno");
-		 $.ajax( 
-					{
-						url : "/product/json/getProduct/"+prodNo ,
-						method : "GET" ,
-						dataType : "json" ,
-						headers : {
-							"Accept" : "application/json",
-							"Content-Type" : "application/json"
-						},
-						success: function(JSONData, status) {
-							 var fileNames = JSONData.fileName.split(","); 
-
-							    var imageHtml = ""; 
-
-							    for (var i = 0; i < fileNames.length; i++) {
-							        var imagePath = "../images/uploadFiles/" + fileNames[i].trim();
-							        imageHtml += "<img src='" + imagePath + "'' width='200' height='auto'>";
-							    }
-					        
-						    var displayValue = "<h3>" +
-						        "상품명 : " + JSONData.prodName + "<br/>" +
-						        "가격 : " + JSONData.price + "<br/>" +
-						        "상품 설명 : " + JSONData.prodDetail + "<br/>" +
-						        "이미지 : <br/>" + imageHtml + "  " + 
-						        "<button id='closeButton'>닫기</button>"+
-						        "</h3>";		
-
-						    $("h3").remove();
-						    $("#" + prodNo).html(displayValue);
-						    
-						    $("#closeButton").on("click", function() {
-						        $("#" + prodNo).html(""); 
-						    });
-						}
-
-			});
-
-			 });
-			});	
-		
-
+		       $.ajax({
+		           url: "/product/json/listProduct/search", 
+		           method: "POST",
+		           dataType: "application/json",
+		           data: JSON.stringify({
+		                "currentPage": 1,
+		                "searchCondition": 1,
+		                "searchKeyword": searchText,
+		                "pageSize": 0,
+		                "endRowNum": 0,
+		                "startRowNum": 0
+		            }),
+		           success: function(data, status) {
+		             alert(data);
+		             alert(status);
+		               $.each(data.list, function(index, product) {
+		                   var displayValue = "<div class='product'>" +
+		                       "<h6>" +
+		                       "상품명 : " + product.prodName + "<br>" +
+		                       "상품상세정보 : " + product.prodDetail + "<br>" +
+		                       "제조일자 : " + product.manuDate + "<br>" +
+		                       "가격 : " + product.price + "<br>" +
+		                       "종류 :" + product.category + "<br>" +
+		                       "</h6>" +
+		                       "</div>";
+		                   
+		                       $('#mainContainer').empty();
+		                  
+		                       $('#mainContainer').html(displayValue);
+		               });
+		           }
+		       });
+		   });
 	   
 
 </script>
@@ -84,8 +71,15 @@
 
 <div style="width:98%; margin-left:10px;">
 
-<!--<form name="detailFormProduct" action="/product/listProduct?menu=${requestScope.menu}" method="post">  --> 
 
+<tbody>
+
+</tbody>
+
+
+
+<!--<form name="detailFormProduct" action="/product/listProduct?menu=${requestScope.menu}" method="post">  --> 
+<%-- 
  <form name="detailFormProduct" >
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0" data-search = "${search }">
 	<tr>
@@ -110,61 +104,6 @@
 </table>
 
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
-	<tr>
-<c:if test="${not empty search.searchCondition}">
-    <td align="right">
-        <select name="searchCondition" class="ct_input_g" style="width:80px">
-            <c:choose>
-                <c:when test="${search.searchCondition == '0'}">
-                    <option value="0" selected>상품번호</option>
-                    <option value="1">상품명</option>
-                    <option value="2">상품가격</option>
-                </c:when>
-                <c:when test="${search.searchCondition == '1'}">
-                    <option value="0">상품번호</option>
-                    <option value="1" selected>상품명</option>
-                    <option value="2">상품가격</option>
-                </c:when>
-                <c:otherwise>
-                    <option value="0">상품번호</option>
-                    <option value="1">상품명</option>
-                    <option value="2" selected>상품가격</option>
-                </c:otherwise>
-            </c:choose>
-        </select>
-        <input type="text" name="searchKeyword" class="ct_input_g" style="width:200px; height:19px" />
-    </td>
-</c:if>
-<c:if test="${empty search.searchCondition}">
-    <td align="right">
-        <select name="searchCondition" class="ct_input_g" style="width:80px">
-            <option value="0" selected>상품번호</option>
-            <option value="1">상품명</option>
-            <option value="2">상품가격</option>
-        </select>
-        <input type="text" name="searchKeyword" class="ct_input_g" style="width:200px; height:19px" />
-    </td>
-</c:if>
-
-<td align="right" width="70">
-    <table border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td width="17" height="23">
-                <img src="/images/ct_btnbg01.gif" width="17" height="23">
-            </td>
-            <td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-               <!--  <a href="javascript:fncGetList(1);">검색</a>--> 
-               검색
-            </td>
-            <td width="14" height="23">
-                <img src="/images/ct_btnbg03.gif" width="14" height="23">
-            </td>
-        </tr>
-    </table>
-</td>
-</tr>
-</table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
     <tr>
@@ -261,7 +200,7 @@
 </table>
 
 </form>
-	
+	--%>
 </div>
 </body>
 </html>

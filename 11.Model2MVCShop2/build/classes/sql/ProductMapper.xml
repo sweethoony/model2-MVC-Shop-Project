@@ -82,13 +82,13 @@
 											<if test="searchCondition != null">
 												<where>
 													<if test="searchCondition == 0 and searchKeyword !='' ">
-										 				p.PROD_NO = #{searchKeyword}
+										 				p.PROD_NO  LIKE '%' || #{searchKeyword} || '%'
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
-										 				p.PROD_NAME = #{searchKeyword}
+										 				p.PROD_NAME LIKE '%' || #{searchKeyword} || '%'
 													</if>
 													<if test="searchCondition == 2 and searchKeyword !='' ">
-														p.PRICE = #{searchKeyword}
+														p.PRICE  LIKE '%' || #{searchKeyword} || '%'	
 													</if>
 												</where>
 											</if>
@@ -112,13 +112,13 @@
 						<if test="searchCondition != null">
 												<where>
 													<if test="searchCondition == 0 and searchKeyword !='' ">
-										 				p.PROD_NO = #{searchKeyword}
+										 				p.PROD_NO LIKE '%' || #{searchKeyword} || '%'
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
-										 				p.PROD_NAME = #{searchKeyword}
+										 				p.PROD_NAME LIKE '%' || #{searchKeyword} || '%'
 													</if>
 													<if test="searchCondition == 2 and searchKeyword !='' ">
-														p.PRICE = #{searchKeyword}
+														p.PRICE LIKE '%' || #{searchKeyword} || '%'
 													</if>
 												</where>
 											</if>

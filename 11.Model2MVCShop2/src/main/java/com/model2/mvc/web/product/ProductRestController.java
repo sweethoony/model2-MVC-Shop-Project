@@ -96,10 +96,10 @@ public class ProductRestController {
 	}
 	
 	@RequestMapping(value = "json/listProduct/{menu}", method = RequestMethod.POST)
-	public List listProduct(@RequestBody Search search, @PathVariable String menu) throws Exception{
+	public List listProduct(@RequestBody(required = false) Search search, @PathVariable String menu) throws Exception{
 		
 		System.out.println("/product/json/listProduct : POST");
-		
+		System.out.println("/product/json/listProduct : POST  menu" + menu);
 		search.setPageSize(pageSize);
 		
 		Map<String, Object> map =  new HashMap<String, Object>();
@@ -112,6 +112,7 @@ public class ProductRestController {
 	    	 map = productService.getNewProductList(search);
 	    }
 		
+		System.out.println("/product/json/listProduct : POST  map   ::   	" + map);
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer) map.get("totalCount")).intValue(), pageUnit, pageSize); 
 		List<Product> productList = (List<Product>) map.get("list");
 		 for (Product product : productList) {
@@ -120,7 +121,7 @@ public class ProductRestController {
 		            product.setProTranCode(proTranCode.trim());
 		        }
 		    }
-		
+		 System.out.println("productList  :  " + productList);
 		return productList;
 	}
 }

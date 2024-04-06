@@ -201,55 +201,10 @@ aside{
 			});
 		});
 		
-		$(document).ready(function() {
-		    $('#searchForm').submit(function(event) { // 폼 제출 이벤트에 대한 핸들러를 수정합니다.
-		        event.preventDefault(); // 폼 제출 기본 동작을 막습니다.
-		        
-		        var searchText = $('#searchInput').val();
-		        
-		        $.ajax({
-		            url: "/product/json/listProduct/search", 
-		            method: "POST",
-		            dataType: "json",
-		            contentType: "application/json", // 데이터 전송 형식을 JSON으로 지정합니다.
-		            data: JSON.stringify({
-		                "currentPage": 1,
-		                "searchCondition": 1,
-		                "searchKeyword": searchText,
-		                "pageSize": 0,
-		                "endRowNum": 0,
-		                "startRowNum": 0
-		            }),
-		            success: function(data, status) {
-		                console.log(data);
-		                console.log(status);
-		                
-		                var displayValue = ""; 
-		                $.each(data, function(index, product) { 
-		                    var productInfo = "<div class='product'>" +
-		                        "<h6>" +
-		                        "상품명 : " + product.prodName + "<br>" +
-		                        "상품상세정보 : " + product.prodDetail + "<br>" +
-		                        "제조일자 : " + product.manuDate + "<br>" +
-		                        "가격 : " + product.price + "<br>" +
-		                        "종류 : " + product.category + "<br>" +
-		                        "</h6>" +
-		                        "</div>";
-		                    displayValue += productInfo; 
-		                    console.log(productInfo); 
-		                });
-		                
-		                $('#mainContainer').empty();
-		                $('#mainContainer').html(displayValue);
-		            }
-
-
-		        });
-		    });
-		});
 
 
 
+	//===> 베너 슬라이드 이벤트
 		setInterval(fnSlide, 6000);
 		
 		function fnSlide() {
@@ -259,6 +214,8 @@ aside{
 		  });
 		};
 
+		
+		//===> 인기 상품 슬라이드 리스트
 		setInterval(plSlide, 6000);
 		
 		function plSlide() {
@@ -268,6 +225,9 @@ aside{
 			    });
 			};
 		
+			
+			
+		//===> 인기 상품 ajax	
 		$(document).ready(function() {
 		    function getListLike() {
 		        $.ajax({
@@ -316,6 +276,8 @@ aside{
 		    getListLike();
 		});
 		
+		
+		//===> 최신 상품 ajax
 		$(document).ready(function() {
 		    function getNewList() {
 		        $.ajax({
@@ -364,6 +326,27 @@ aside{
 		    }
 
 		    getNewList();
+		});
+		
+		
+		$(document).ready(function() {
+		    $('#searchForm').click(function(event) {
+		        event.preventDefault();
+		        
+		        var url = $(this).find('#searchProduct').attr('href'); 
+		        
+		        $('#mainContainer').load(url + ' #mainContainer');
+		    });
+		});
+
+		$(document).ready(function() {
+		    $('#searchProduct').click(function(event) {
+		        event.preventDefault(); 
+		        
+		        var url = '/product/listProduct?menu=search'; 
+		        
+		        $('#mainContainer').load(url);
+		    });
 		});
 
 
@@ -423,7 +406,7 @@ aside{
                     <i class="glyphicon glyphicon-shopping-cart"></i> 상품구매
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="#">상품검색</a></li>
+                    <li id="searchProduct" class="list-group-item">상품검색</a></li>
                     <li class="list-group-item">
                         <a href="#">구매이력조회</a> <i class="glyphicon glyphicon-ban-circle"></i>
                     </li>
@@ -433,7 +416,6 @@ aside{
                 </ul>
             </div>
         </aside>
-        
         
         <main id = "mainContainer" class="col-md-9">
             <div id="v-banner">

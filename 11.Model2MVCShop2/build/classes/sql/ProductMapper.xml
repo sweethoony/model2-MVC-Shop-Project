@@ -16,6 +16,7 @@
     <result property="fileName" column="IMAGE_FILE" jdbcType="VARCHAR"/>
     <result property="regDate" column="REG_DATE" jdbcType="DATE"/>
     <result property="proTranCode" column="TRAN_STATUS_CODE" jdbcType="CHAR"/>
+    <result property="category" column="CATEGORY" jdbcType="VARCHAR"/>
 </resultMap>
 
 	
@@ -29,6 +30,7 @@
 	 	#{manuDate:VARCHAR},
 	 	#{price:NUMERIC},
 	 	#{fileName:VARCHAR},
+	 	#{category:VARCHAR}
 	 	SYSDATE)
 	 </insert>
 	 
@@ -42,6 +44,7 @@
     p.PROD_DETAIL,
     p.PROD_NO,
     p.REG_DATE,
+    p.CATEGORY,
     NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
     FROM
     PRODUCT p
@@ -59,7 +62,8 @@
 	   PROD_NAME  =  #{prodName},
 	   PROD_DETAIL  =  #{prodDetail},
 	   MANUFACTURE_DAY  =  #{manuDate},
-	   PRICE  =  #{price}, 
+	   PRICE  =  #{price},
+	   CATEGORY = #{category}, 
 	   IMAGE_FILE  =  #{fileName} 	   
 	   </set>
 	   where PROD_NO  =  #{prodNo}
@@ -75,6 +79,7 @@
 	  					 	 						    p.IMAGE_FILE,
 	  					 	 						    p.PROD_DETAIL,
 	  					 	 						    p.PROD_NO,
+	  					 	 						     p.CATEGORY,
 	  					 	 						    p.REG_DATE,
 	  					 	 						    NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
 											FROM PRODUCT p
@@ -105,6 +110,7 @@
 	  					 	 						    p.IMAGE_FILE,
 	  					 	 						    p.PROD_DETAIL,
 	  					 	 						    p.PROD_NO,
+	  					 	 						     p.CATEGORY,
 	  					 	 						    p.REG_DATE,
 	  					 	 						    NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
 											FROM PRODUCT p
@@ -134,6 +140,7 @@
 	  					 	 						    p.IMAGE_FILE,
 	  					 	 						    p.PROD_DETAIL,
 	  					 	 						    p.PROD_NO,
+	  					 	 						     p.CATEGORY,
 	  					 	 						    p.REG_DATE,
 	  					 	 						    NVL(t.TRAN_STATUS_CODE, 0) AS TRAN_STATUS_CODE
 											FROM PRODUCT p

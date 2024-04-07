@@ -82,7 +82,7 @@ public class ProductController {
 
 		List<MultipartFile> fileList = request.getFiles("fileName");
 		
-        String path = "C:\\Users\\jhyng\\git\\model2-MVC-Shop-Project\\10.Model2MVCShop(Ajax)\\src\\main\\webapp\\images\\uploadFiles\\";
+        String path = "C:\\Users\\jhyng\\git\\model2-MVC-Shop-Project\\11.Model2MVCShop2\\src\\main\\webapp\\images\\uploadFiles\\";
 		
 		Product product = new Product();
 		

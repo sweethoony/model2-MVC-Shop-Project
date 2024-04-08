@@ -25,7 +25,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
+	<script type="text/javascript" src="../javascript/common/scroll.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<!--  ///////////////////////// CSS ////////////////////////// -->
@@ -328,28 +328,19 @@ aside{
 		    getNewList();
 		});
 		
-		
-		$(document).ready(function() {
-		    $('#searchForm').click(function(event) {
-		        event.preventDefault();
-		        
-		        var url = $(this).find('#searchProduct').attr('href'); 
-		        
-		        $('#mainContainer').load(url + ' #mainContainer');
-		    });
-		});
+	
 
 		$(document).ready(function() {
-		    $('#searchProduct').click(function(event) {
+		    $('#searchForm').submit(function(event) {
 		        event.preventDefault(); 
-		        
-		        var url = '/product/listProduct?menu=search'; 
-		        
-		        $('#mainContainer').load(url);
+		        var searchText = $('#searchInput').val();
+		        $('#mainContainer').empty();
+		        fncSearch(searchText); 
 		    });
 		});
 
 
+		 
 	</script>	
 	
 </head>
@@ -358,13 +349,13 @@ aside{
     <header class="header" >
    		 <a id = "headerName" href="/index.jsp">후니네 반찬</a>
    		
-   		<form id="searchForm"method="post">
-   			<input id= "searchInput" type="text" autocomplete="off" placeholder="원하시는 상품명을 입력하세요.">
-   			
-   			<button id="btn-search"title="검색하기">
-   				<img src="images/header-sch.png" alt = "검색">
-   			</button>
-   		</form> 
+   		   <form id="searchForm" method="post" action="/product/listProduct.jsp">
+		        <input id="searchInput" type="text" name="productName" autocomplete="off" placeholder="원하는 상품명을 입력하세요.">
+		        <button id="btn-search" title="검색하기" type="submit">
+		            <img src="images/header-sch.png" alt="검색">
+		        </button>
+		    </form>
+
 		
     </header>
     
@@ -445,7 +436,7 @@ aside{
             		<ul class = "news-list"></ul>
             </div>
         </main>
-        
+         <div id="searchMainContainer"></div>
     </div>
 </div>
 

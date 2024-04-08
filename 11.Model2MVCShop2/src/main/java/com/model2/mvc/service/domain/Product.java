@@ -13,7 +13,16 @@ public class Product {
 	private int prodNo;
 	private Date regDate;
 	private String proTranCode;
+	private String category;
 	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	public Product(){
 	}
 	
@@ -71,6 +80,6 @@ public class Product {
 	public String toString() {
 		return "ProductVO : [fileName]" + fileName
 				+ "[manuDate]" + manuDate+ "[price]" + price + "[prodDetail]" + prodDetail
-				+ "[prodName]" + prodName + "[prodNo]" + prodNo + "proTranCode" + proTranCode;
+				+ "[prodName]" + prodName + "[prodNo]" + prodNo + "proTranCode" + proTranCode+"category"+category;
 	}	
 }

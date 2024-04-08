@@ -1,5 +1,7 @@
 package com.model2.mvc.service.product.impl;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,10 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	public Product addProduct(Product product) throws Exception{
+		String fileName = product.getFileName();
+		String encodedFileName = URLEncoder.encode(fileName, "UTF-8"); // UTF-8로 인코딩
+		product.setFileName(encodedFileName); 
+
 		productDao.insertProduct(product);
 		
 		return product;
@@ -37,7 +43,14 @@ public class ProductServiceImpl implements ProductService{
 	
 	public Product getProduct(int prodNo) throws Exception {
 		
-		return productDao.findProduct(prodNo);
+		Product product = productDao.findProduct(prodNo);
+		
+		String encodedFileName = product.getFileName(); 
+		String decodedFileName = URLDecoder.decode(encodedFileName, "UTF-8");
+
+		product.setFileName(decodedFileName);
+		
+		return product;
 	}
 	
 	public Map<String, Object> getProductList(Search search) throws Exception{
@@ -56,6 +69,10 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	public void updateProduct(Product product) throws Exception{
+		String fileName = product.getFileName();
+		String encodedFileName = URLEncoder.encode(fileName, "UTF-8"); // UTF-8로 인코딩
+		product.setFileName(encodedFileName); 
+
 		productDao.updateProduct(product);
 	}
 

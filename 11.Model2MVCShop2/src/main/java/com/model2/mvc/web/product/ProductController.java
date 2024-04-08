@@ -1,6 +1,7 @@
 package com.model2.mvc.web.product;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -84,6 +85,8 @@ public class ProductController {
 		
         String path = "C:\\Users\\jhyng\\git\\model2-MVC-Shop-Project\\11.Model2MVCShop2\\src\\main\\webapp\\images\\uploadFiles\\";
 		
+        
+        
 		Product product = new Product();
 		
 		List<String> fileNames = new ArrayList<>();
@@ -95,7 +98,13 @@ public class ProductController {
 			System.out.println("orgFileName :: "+orgFileName);
 			System.out.println("filesize :: "+filesize);
 			
-			fileNames.add(orgFileName);
+			String deOrgFileName= URLDecoder.decode(orgFileName, "UTF-8");
+			
+			System.out.println("deOrgFileName :: "+deOrgFileName);
+			
+			fileNames.add(deOrgFileName);
+			
+			
 			
 			String safeFile = path + orgFileName;
 			try {

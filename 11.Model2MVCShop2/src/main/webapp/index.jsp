@@ -1,11 +1,11 @@
-<%@ page contentType="text/html; charset=EUC-KR" %>
-<%@ page pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8"%>
 
 
 <!--  ///////////////////////// JSTL  ////////////////////////// -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- ///////////////////////////// ·Î±×ÀÎ½Ã Forward  /////////////////////////////////////// -->
+<!-- ///////////////////////////// ë¡œê·¸ì¸ì‹œ Forward  /////////////////////////////////////// -->
  
  <!-- //////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
@@ -17,7 +17,7 @@
 <head>
 	<meta charset="EUC-KR">
 	
-	<!-- ÂüÁ¶ : http://getbootstrap.com/css/   -->
+	<!-- ì°¸ì¡° : http://getbootstrap.com/css/   -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
@@ -185,18 +185,18 @@ aside{
    	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 		
-		//============= È¸¿ø¿ø°¡ÀÔ È­¸éÀÌµ¿ =============
+		//============= íšŒì›ì›ê°€ì… í™”ë©´ì´ë™ =============
 		$( function() {
-			//==> Ãß°¡µÈºÎºĞ : "addUser"  Event ¿¬°á
-			$("a[href='#' ]:contains('È¸¿ø°¡ÀÔ')").on("click" , function() {
+			//==> ì¶”ê°€ëœë¶€ë¶„ : "addUser"  Event ì—°ê²°
+			$("a[href='#' ]:contains('íšŒì›ê°€ì…')").on("click" , function() {
 				self.location = "/user/addUser"
 			});
 		});
 		
-		//============= ·Î±×ÀÎ È­¸éÀÌµ¿ =============
+		//============= ë¡œê·¸ì¸ í™”ë©´ì´ë™ =============
 		$( function() {
-			//==> Ãß°¡µÈºÎºĞ : "addUser"  Event ¿¬°á
-			$("a[href='#' ]:contains('·Î ±× ÀÎ')").on("click" , function() {
+			//==> ì¶”ê°€ëœë¶€ë¶„ : "addUser"  Event ì—°ê²°
+			$("a[href='#' ]:contains('ë¡œ ê·¸ ì¸')").on("click" , function() {
 				self.location = "/user/login"
 			});
 		});
@@ -204,7 +204,7 @@ aside{
 
 
 
-	//===> º£³Ê ½½¶óÀÌµå ÀÌº¥Æ®
+	//===> ë² ë„ˆ ìŠ¬ë¼ì´ë“œ ì´ë²¤íŠ¸
 		setInterval(fnSlide, 6000);
 		
 		function fnSlide() {
@@ -215,7 +215,7 @@ aside{
 		};
 
 		
-		//===> ÀÎ±â »óÇ° ½½¶óÀÌµå ¸®½ºÆ®
+		//===> ì¸ê¸° ìƒí’ˆ ìŠ¬ë¼ì´ë“œ ë¦¬ìŠ¤íŠ¸
 		setInterval(plSlide, 6000);
 		
 		function plSlide() {
@@ -227,7 +227,7 @@ aside{
 		
 			
 			
-		//===> ÀÎ±â »óÇ° ajax	
+		//===> ì¸ê¸° ìƒí’ˆ ajax	
 		$(document).ready(function() {
 		    function getListLike() {
 		        $.ajax({
@@ -277,7 +277,7 @@ aside{
 		});
 		
 		
-		//===> ÃÖ½Å »óÇ° ajax
+		//===> ìµœì‹  ìƒí’ˆ ajax
 		$(document).ready(function() {
 		    function getNewList() {
 		        $.ajax({
@@ -336,6 +336,18 @@ aside{
 		        var searchText = $('#searchInput').val();
 		        $('#mainContainer').empty();
 		        fncSearch(searchText); 
+		        if(searchText != null){
+					$('#searchMainContainer').empty();
+				}	        
+		    });
+		});
+
+		$(document).ready(function(){
+		    $('#searchProduct').click(function(event){
+		        event.preventDefault();
+		        $('#mainContainer').empty();
+		        var searchText = "";
+		        fncSearch(searchText); 
 		    });
 		});
 
@@ -347,12 +359,12 @@ aside{
 
 <body>
     <header class="header" >
-   		 <a id = "headerName" href="/index.jsp">ÈÄ´Ï³× ¹İÂù</a>
+   		 <a id = "headerName" href="/index.jsp">í›„ë‹ˆë„¤ ë°˜ì°¬</a>
    		
    		   <form id="searchForm" method="post" action="/product/listProduct.jsp">
-		        <input id="searchInput" type="text" name="productName" autocomplete="off" placeholder="¿øÇÏ´Â »óÇ°¸íÀ» ÀÔ·ÂÇÏ¼¼¿ä.">
-		        <button id="btn-search" title="°Ë»öÇÏ±â" type="submit">
-		            <img src="images/header-sch.png" alt="°Ë»ö">
+		        <input id="searchInput" type="text" name="productName" autocomplete="off" placeholder="ì›í•˜ëŠ” ìƒí’ˆëª…ì„ ì…ë ¥í•˜ì„¸ìš”.">
+		        <button id="btn-search" title="ê²€ìƒ‰í•˜ê¸°" type="submit">
+		            <img src="images/header-sch.png" alt="ê²€ìƒ‰">
 		        </button>
 		    </form>
 
@@ -368,41 +380,41 @@ aside{
      <aside class="col-md-3"style="position: sticky; top: 20px;">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="glyphicon glyphicon-heart"></i> È¸¿ø°ü¸®
+                    <i class="glyphicon glyphicon-heart"></i> íšŒì›ê´€ë¦¬
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#">°³ÀÎÁ¤º¸Á¶È¸</a> <i class="glyphicon glyphicon-ban-circle"></i>
+                        <a href="#">ê°œì¸ì •ë³´ì¡°íšŒ</a> <i class="glyphicon glyphicon-ban-circle"></i>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">È¸¿øÁ¤º¸Á¶È¸</a> <i class="glyphicon glyphicon-ban-circle"></i>
+                        <a href="#">íšŒì›ì •ë³´ì¡°íšŒ</a> <i class="glyphicon glyphicon-ban-circle"></i>
                     </li>
                 </ul>
             </div>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="glyphicon glyphicon-briefcase"></i> ÆÇ¸Å»óÇ°°ü¸®
+                    <i class="glyphicon glyphicon-briefcase"></i> íŒë§¤ìƒí’ˆê´€ë¦¬
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#">ÆÇ¸Å»óÇ°µî·Ï</a> <i class="glyphicon glyphicon-ban-circle"></i>
+                        <a href="#">íŒë§¤ìƒí’ˆë“±ë¡</a> <i class="glyphicon glyphicon-ban-circle"></i>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">ÆÇ¸Å»óÇ°°ü¸®</a> <i class="glyphicon glyphicon-ban-circle"></i>
+                        <a href="#">íŒë§¤ìƒí’ˆê´€ë¦¬</a> <i class="glyphicon glyphicon-ban-circle"></i>
                     </li>
                 </ul>
             </div>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="glyphicon glyphicon-shopping-cart"></i> »óÇ°±¸¸Å
+                    <i class="glyphicon glyphicon-shopping-cart"></i> ìƒí’ˆêµ¬ë§¤
                 </div>
                 <ul class="list-group">
-                    <li id="searchProduct" class="list-group-item">»óÇ°°Ë»ö</a></li>
+                    <li id="searchProduct" class="list-group-item">ìƒí’ˆê²€ìƒ‰</a></li>
                     <li class="list-group-item">
-                        <a href="#">±¸¸ÅÀÌ·ÂÁ¶È¸</a> <i class="glyphicon glyphicon-ban-circle"></i>
+                        <a href="#">êµ¬ë§¤ì´ë ¥ì¡°íšŒ</a> <i class="glyphicon glyphicon-ban-circle"></i>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">ÃÖ±Ùº»»óÇ°</a> <i class="glyphicon glyphicon-ban-circle"></i>
+                        <a href="#">ìµœê·¼ë³¸ìƒí’ˆ</a> <i class="glyphicon glyphicon-ban-circle"></i>
                     </li>
                 </ul>
             </div>
@@ -418,25 +430,25 @@ aside{
             </div>
             
             <div id = "rcmd-prod">
-            		<h3>ÀÎ±â »óÇ°</h3>
+            		<h3>ì¸ê¸° ìƒí’ˆ</h3>
             		<div id = "rcmd-list">
             			<ul class = "product-list"></ul>
             		</div>
             </div>
             
             <div id = "new-prod">
-            		<h3>ÃÖ½Å »óÇ°</h3>
+            		<h3>ìµœì‹  ìƒí’ˆ</h3>
             		<div id = "new-list">
             			<ul class = "newProduct-list"></ul>
             		</div>
             </div>
             
             <div id="news">
-            	<h3>°øÁö»çÇ×</h3>
+            	<h3>ê³µì§€ì‚¬í•­</h3>
             		<ul class = "news-list"></ul>
             </div>
         </main>
-         <div id="searchMainContainer"></div>
+         <div id="searchMainContainer" class="col-md-9"></div>
     </div>
 </div>
 

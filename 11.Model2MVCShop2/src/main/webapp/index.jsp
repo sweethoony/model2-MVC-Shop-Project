@@ -25,7 +25,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	<script type="text/javascript" src="../javascript/common/scroll.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<!--  ///////////////////////// CSS ////////////////////////// -->
@@ -328,7 +327,105 @@ aside{
 		    getNewList();
 		});
 		
-	
+		
+		// 상품검색 및 상품검색 입력시 ajax
+		function fncSearch(searchText) {
+		    var page = 1;
+		    var isLoading = false;
+
+		    $('#searchForm').submit(function(event) {
+		        event.preventDefault();
+		        loadNextPage(searchText);
+		    });
+
+		    $(window).on('scroll', function() {
+		        if (!isLoading && $(window).scrollTop() + $(window).height() >= $(document).height() - 1) {
+		            loadNextPage(searchText);
+		        }
+		    });
+
+		    function loadNextPage(searchText) {
+		        var productInfo = "";
+		        isLoading = true;
+		        $.ajax({
+		            url: "/product/json/listProduct/search",
+		            method: "POST",
+		            dataType: "json",
+		            contentType: "application/json",
+		            data: JSON.stringify({
+		                "currentPage": page,
+		                "searchCondition": 1,
+		                "searchKeyword": searchText,
+		                "pageSize": 0,
+		                "endRowNum": 0,
+		                "startRowNum": 0
+		            }),
+		            success: function(data, status) {
+		                console.log(data);
+		                console.log(status);
+		                $.each(data, function(index, product) {
+		                    var fileNames = product.fileName;
+		                    if (fileNames) {
+		                        fileNames = fileNames.split(",");
+		                    } else {
+		                        fileNames = ["noImages.png"];
+		                    }
+
+		                    var imageHtml = "";
+		                    for (var i = 0; i < fileNames.length; i++) {
+		                        var imagePath = "../images/uploadFiles/" + fileNames[i].trim();
+		                        var productDetail = "<h6>" +
+		                            "<br>" +
+		                            "상품명 : " + product.prodName + "<br>" +
+		                            "상품상세정보 : " + product.prodDetail + "<br>" +
+		                            "제조일자 : " + product.manuDate + "<br>" +
+		                            "가격 : " + product.price + "<br>" +
+		                            "종류 : " + product.category + "<br>" +
+		                            "</h6>";
+
+		                        var productContent = "<div class='col-xs-12 col-sm-6 col-md-4'>" +
+		                            "<div class='thumbnail'>" +
+		                            "<a href='/product/getProduct?prodNo=" + product.prodNo + "&menu=search'><img src='" + imagePath + "' width='200' height='auto'></a>" +
+		                            "</div>" +
+		                            productDetail +
+		                            "</div>";
+
+		                        productInfo += productContent;
+		                    }
+
+		                    if ((index + 1) % 3 === 0) {
+		                        productInfo += "</div><div class='row'>";
+		                    }
+		                });
+
+		                $('#searchMainContainer').append(productInfo);
+		                page++;
+		                isLoading = false;
+		            },
+		            error: function(xhr, status, error) {
+		                console.error("Error:", error);
+		                isLoading = false;
+		            }
+		        });
+		    }
+		}
+		
+		
+		$(document).ready(function() {
+		    var searchText = ''; 
+
+		    $('#searchMainContainer').on('click', 'a', function(event) {
+		        event.preventDefault(); 
+		        var href = $(this).attr('href'); 
+
+		        $('#mainContainer').empty();
+		        $('#searchMainContainer').empty();
+
+		        $.get(href, function(data) {
+		            $('#mainContainer').html(data);
+		        });
+		    });
+		});
 
 		$(document).ready(function() {
 		    $('#searchForm').submit(function(event) {

@@ -123,7 +123,21 @@ public class UserController {
 		
 		return "redirect:/index.jsp";
 	}
+	
+	
+	@RequestMapping( value="kakaoLogin", method=RequestMethod.POST )
+	public String kakaoLogin(@ModelAttribute("user") User user , HttpSession session ) throws Exception{
 		
+		System.out.println("/user/login : POST");
+		//Business Logic
+		User dbUser=userService.getUser(user.getUserId());
+		
+		if( user.getPassword().equals(dbUser.getPassword())){
+			session.setAttribute("user", dbUser);
+		}
+		
+		return "redirect:/index.jsp";
+	}
 	
 	@RequestMapping( value="logout", method=RequestMethod.GET )
 	public String logout(HttpSession session ) throws Exception{

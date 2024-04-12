@@ -1,5 +1,8 @@
 package com.model2.mvc.web.user;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,4 +56,19 @@ public class UserRestController {
 		
 		return dbUser;
 	}
+	
+	@RequestMapping(value = "json/checkSession", method = RequestMethod.GET)
+	public Map<String, Boolean> checkSession(HttpSession session) {
+		Map<String, Boolean> response = new HashMap<>();
+		
+		User user = (User) session.getAttribute("user"); 
+        
+		System.out.println("json/checkSession  user   ::   " + user!=null);
+		
+        response.put("sessionValid", user != null);
+        
+        return response;
+    }
+		
+	
 }

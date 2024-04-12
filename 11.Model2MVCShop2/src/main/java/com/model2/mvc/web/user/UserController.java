@@ -120,6 +120,7 @@ public class UserController {
 		if( user.getPassword().equals(dbUser.getPassword())){
 			session.setAttribute("user", dbUser);
 		}
+		System.out.println("user/login  session  ::  " + session.getAttribute("user"));
 		
 		return "redirect:/index.jsp";
 	}

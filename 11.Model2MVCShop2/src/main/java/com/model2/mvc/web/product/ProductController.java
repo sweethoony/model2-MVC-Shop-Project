@@ -149,13 +149,17 @@ public class ProductController {
 	    // Business Logic
 	    Product prodVo = productService.getProduct(prodNo);
 	    System.out.println("/getProduct.Product" + prodVo);
-	    System.out.println("/getProduct.session" + session);
+	    System.out.println("/getProduct.session" + session.getAttribute("user"));
 	    
-	    if(session != null && session.equals("user")) {
+	    if(session.getAttribute("user") != null) {
 	    	System.out.println("/getProduct. session != null ");
-	    String userId = ((User) session.getAttribute("user")).getUserId();
+	    	User user = (User) session.getAttribute("user");
+	    	
 
-	    int pushLikeNo = likeService.getLike(userId, prodNo);
+	    System.out.println("user  ::  " + user);
+	    System.out.println("user.userId  ::  " + user.getUserId());
+	    
+	    int pushLikeNo = likeService.getLike(user.getUserId(), prodNo);
 
 	    int countLikeProd = likeService.countLikeProd(prodNo);
 	    System.out.println("/getProduct.countLikeProd" + pushLikeNo);
@@ -165,6 +169,7 @@ public class ProductController {
 	    model.addAttribute("pushLikeNo1", pushLikeNo);
 	    model.addAttribute("prodVo", prodVo);
 	    model.addAttribute("menu", menu);
+	    model.addAttribute("user",user);
 	  
 	    System.out.println("/getProduct. menu  1"  + menu);
 	    if (menu != null && !menu.isEmpty()) {
@@ -218,6 +223,7 @@ else {
 	    
 	    return "forward:/product/getProduct.jsp";
 		}
+		
 	}
 	
 //	@RequestMapping("/updateProduct.do")

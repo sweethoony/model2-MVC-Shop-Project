@@ -25,6 +25,14 @@
 			 });
 	 	});
 		
+		
+		$(document).ready(function(){
+			$("#emptyLikeButton").on("click",function(){
+				alert("로그인 후 이용 가능합니다.")
+				self.location = "/user/login"
+			});
+		});
+		
 		 $(document).ready(function() {
 	         var csvImageNames = "${prodVo.fileName}"; 
 	         var imageNamesArray = csvImageNames.split(","); 
@@ -53,16 +61,9 @@
 
 	     });
 		 
-		 function likeOrLogin(url) {
-			    var session = ""; 
-
-			    if (session !== "user" && session !== "admin" && session !== "manager") {
-			        alert("로그인 후 이용 가능합니다.");
-			        window.location.href =  "/user/login";
-			    } else {
-			        window.location.href = url; 
-			    }
-			}
+		
+		 
+		
 	</script>
 </head> 	
 
@@ -100,7 +101,8 @@
 		<td class="ct_write01">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="105">${prodVo.prodNo}</td>
+					<td width="105" id="prodNo">${prodVo.prodNo}</td>
+
 				</tr>
 			</table>
 		</td>
@@ -176,28 +178,34 @@
 		    </c:when>
 		    <c:otherwise>
 		       
+		       <c:if test="${empty user }">
+		       <button id="emptyLikeButton">
+		     	  	<img src="/images/like_btn.png" width="20" height="20"/>
+		     	  </button>
+		       </c:if>
+		        <c:if test="${ ! empty user }">
 		      <button id="likeButton">
 			    <c:choose>
 			        <c:when test="${pushLikeNo1 == 0}">
-			            <a href="#" onclick="likeOrLogin('/like/addLike?pushLikeNo=1&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}')">
+			            <a href="/like/addLike?pushLikeNo=1&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}">
 			                <img src="/images/like_btn.png" width="20" height="20"/>
 			            </a>
 			        </c:when>
 			        <c:otherwise>
-			            <a href="#" onclick="likeOrLogin('/like/deleteLike?pushLikeNo=0&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}')">
+			            <a href="/like/deleteLike?pushLikeNo=0&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}">
 			                <img src="/images/like_btn_red.png" width="20" height="20"/>
 			            </a>
 			        </c:otherwise>
 			    </c:choose>
 			</button>
+			</c:if>
 			좋아요 수 ${countLikeProd}
-
 		    </c:otherwise>
 		</c:choose>
 
 
 
-        <input type="hidden" id="pushLikeNo" name="pushLikeNo" value="${like}"/>
+        <input type="hidden" id="pushLikeNo" name="pushLikeNo" value="${pushLikeNo1} " />
     </td>
 </tr> 
 </table>

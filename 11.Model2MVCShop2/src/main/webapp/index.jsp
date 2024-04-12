@@ -278,55 +278,65 @@ aside{
 		
 		//===> 최신 상품 ajax
 		$(document).ready(function() {
-		    function getNewList() {
-		        $.ajax({
-		            url: '/product/json/listProduct/newProd',
-		            type: 'POST',
-		            contentType: 'application/json',
-		            data: JSON.stringify({
-		                "currentPage": 1,
-		                "searchCondition": null,
-		                "searchKeyword": null,
-		                "pageSize": 0,
-		                "endRowNum": 0,
-		                "startRowNum": 0
-		            }),
-		            success: function(response) {
-		                var prodNewtList = $(".newProduct-list");
-		                prodNewtList.empty(); 
+    function getNewList() {
+        $.ajax({
+            url: '/product/json/listProduct/newProd',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "currentPage": 1,
+                "searchCondition": null,
+                "searchKeyword": null,
+                "pageSize": 0,
+                "endRowNum": 0,
+                "startRowNum": 0
+            }),
+            success: function(response) {
+                var prodNewtList = $(".newProduct-list");
+                prodNewtList.empty();
 
-		                $.each(response, function(index, item) {
-		                    var imgPaths = item.fileName.split(',');
-		                    var firstImgPath = imgPaths[0];
-							
-		                        var nListItem = $("<li></li>");
-		                        var nFigure = $("<figure></figure>");
-		                        var nHref =$(' <a href="/product/getProduct?prodNo='+item.prodNo+'&menu=search"></a>');
-		                        var nImg = $("<img>").attr({
-		                        	src: "images/uploadFiles/" + firstImgPath.trim(),
-		                            alt: item.prodName
-		                        }).css({
-		                            width: "auto",
-		                            height: "100px" 
-		                        });
-		                        var nDiv = $("<div>", {class: "image-text", text: item.prodName});
-		                        var nPriceDiv = $("<div>",{class:"price-text",text:item.price});
-		                        
-		                        nHref.append(nImg);
-		                        nHref.append(nDiv);
-		                        nHref.append(nPriceDiv);
-		                        nFigure.append(nHref);
-		                        nListItem.append(nFigure);
-		                        prodNewtList.append(nListItem);
-		                        
-		                });
-		            }
-		        });
-		    }
+                $.each(response, function(index, item) {
+                    var imgPaths = item.fileName.split(',');
+                    var firstImgPath = imgPaths[0];
 
-		    getNewList();
+                    var nListItem = $("<li></li>");
+                    var nFigure = $("<figure></figure>");
+                    var nHref = $('<a href="/product/getProduct?prodNo=' + item.prodNo + '&menu=search"></a>');
+                    var nImg = $("<img>").attr({
+                        src: "images/uploadFiles/" + firstImgPath.trim(),
+                        alt: item.prodName
+                    }).css({
+                        width: "auto",
+                        height: "100px"
+                    });
+                    var nDiv = $("<div>", {class: "image-text", text: item.prodName});
+                    var nPriceDiv = $("<div>", {class: "price-text", text: item.price});
+
+                    nHref.append(nImg);
+                    nHref.append(nDiv);
+                    nHref.append(nPriceDiv);
+                    nFigure.append(nHref);
+                    nListItem.append(nFigure);
+                    prodNewtList.append(nListItem);
+                });
+            }
+        });
+    }
+
+    getNewList();
+
+});
+
+		$(document).ready(function() {
+		    $(".newProduct-list").on('click', 'a', function(event) {
+		        event.preventDefault(); 
+		        var href = $(this).attr('href'); 
+
+		        $('#mainContainer').empty().load(href);
+		    });
 		});
-		
+
+
 		
 		// 상품검색 및 상품검색 입력시 ajax
 		function fncSearch(searchText) {

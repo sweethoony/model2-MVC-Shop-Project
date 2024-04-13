@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     
 <%@ page import= "com.model2.mvc.service.domain.*" %>
 
@@ -10,25 +10,45 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<title>»óÇ°»ó¼¼º¸±â</title>
+<title>ìƒí’ˆìƒì„¸ë³´ê¸°</title>
 
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
 	 
 		$(function() {
-			 $( "td.ct_btn01:contains('±¸¸Å')" ).on("click" , function() {
-				 self.location = "/purchase/addPurchase?prod_no="+${prodVo.prodNo}
+			 $( "td.ct_btn01:contains('êµ¬ë§¤')" ).on("click" , function() {
+				  event.preventDefault();
+				  $('#mainContainer').empty();
+				  $('#searchForm').empty();
+				  $('#searchMainContainer').empty();
+				  
+				  $.ajax({
+					    url: "/purchase/addPurchase",
+					    data: { prod_no: ${prodVo.prodNo} },
+					    type: "GET",
+					    success: function(response) {
+					        $('#mainContainer').html(response);
+					    },
+					    error: function(xhr, status, error) {
+					        console.error(error);
+					    }
+					});
+
+
 			 });
 			 
-			 $( "td.ct_btn01:contains('ÀÌÀü')" ).on("click" , function() {
-				 self.location = "/product/listProduct?menu=search"
+			 $( "td.ct_btn01:contains('ì´ì „')" ).on("click" , function() {
+				 self.location = "/index.jsp"
+
+
 			 });
 	 	});
 		
 		
+
 		$(document).ready(function(){
 			$("#emptyLikeButton").on("click",function(){
-				alert("·Î±×ÀÎ ÈÄ ÀÌ¿ë °¡´ÉÇÕ´Ï´Ù.")
+				alert("ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥í•©ë‹ˆë‹¤.")
 				self.location = "/user/login"
 			});
 		});
@@ -38,7 +58,7 @@
 	         var imageNamesArray = csvImageNames.split(","); 
 
 	         var $imageTableBody = $("#imageTableBody");
-
+	         
 	         $.each(imageNamesArray, function(index, imageName) {
 	        	    var imagePath = "/images/uploadFiles/" + imageName;
 
@@ -78,7 +98,7 @@
 		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="93%" class="ct_ttl01">»óÇ°»ó¼¼Á¶È¸</td>
+					<td width="93%" class="ct_ttl01">ìƒí’ˆìƒì„¸ì¡°íšŒ</td>
 					<td width="20%" align="right">&nbsp;</td>
 				</tr>
 			</table>
@@ -95,7 +115,7 @@
 	</tr>
 	<tr>
 		<td width="104" class="ct_write">
-			»óÇ°¹øÈ£ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			ìƒí’ˆë²ˆí˜¸ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
@@ -112,7 +132,7 @@
 	</tr>
 	<tr>
 		<td width="104" class="ct_write">
-			»óÇ°¸í <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			ìƒí’ˆëª… <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">${prodVo.prodName}</td>
@@ -121,7 +141,7 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-	    <td width="104" class="ct_write">»óÇ°ÀÌ¹ÌÁö</td>
+	    <td width="104" class="ct_write">ìƒí’ˆì´ë¯¸ì§€</td>
 	    <td bgcolor="D6D6D6" width="1"></td>
 	    <td class="ct_write01">
 	        <table border="0" cellspacing="0" cellpadding="0">
@@ -134,7 +154,7 @@
 	</tr>
 	<tr>
 		<td width="104" class="ct_write">
-			»óÇ°»ó¼¼Á¤º¸ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			ìƒí’ˆìƒì„¸ì •ë³´ <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">${prodVo.prodDetail}</td>
@@ -143,7 +163,7 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">Á¦Á¶ÀÏÀÚ</td>
+		<td width="104" class="ct_write">ì œì¡°ì¼ì</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">${prodVo.manuDate}</td>
 	</tr>
@@ -151,7 +171,7 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">°¡°İ</td>
+		<td width="104" class="ct_write">ê°€ê²©</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">${prodVo.price}</td>
 	</tr>
@@ -159,7 +179,7 @@
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
 	<tr>
-		<td width="104" class="ct_write">µî·ÏÀÏÀÚ</td>
+		<td width="104" class="ct_write">ë“±ë¡ì¼ì</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">${prodVo.regDate}</td>
 	</tr>
@@ -168,13 +188,13 @@
 	</tr>
 	
 	<tr>
-    <td width="104" class="ct_write">ÁÁ¾Æ¿ä</td>
+    <td width="104" class="ct_write">ì¢‹ì•„ìš”</td>
     <td bgcolor="D6D6D6" width="1"></td>
     <td class="ct_write01">
         <c:choose>
 		    <c:when test="${user.role eq 'admin' or user.role eq 'manager'}">
 		      
-		        <span id="likeCount">ÁÁ¾Æ¿ä ´©¸¥ °í°´ÀÇ ¼ö:${countLikeProd}</span>
+		        <span id="likeCount">ì¢‹ì•„ìš” ëˆ„ë¥¸ ê³ ê°ì˜ ìˆ˜:${countLikeProd}</span>
 		    </c:when>
 		    <c:otherwise>
 		       
@@ -199,7 +219,7 @@
 			    </c:choose>
 			</button>
 			</c:if>
-			ÁÁ¾Æ¿ä ¼ö ${countLikeProd}
+			ì¢‹ì•„ìš” ìˆ˜ ${countLikeProd}
 		    </c:otherwise>
 		</c:choose>
 
@@ -222,8 +242,8 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 		 			<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-					<!-- <a href="/purchase/addPurchase?prod_no=${prodVo.prodNo}">±¸¸Å</a> -->
-					±¸¸Å
+					<!-- <a href="/purchase/addPurchase?prod_no=${prodVo.prodNo}">êµ¬ë§¤</a> -->
+					êµ¬ë§¤
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -234,8 +254,8 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-					<!--  <a href="/product/listProduct?menu=search">ÀÌÀü</a>-->
-					ÀÌÀü
+					<!--  <a href="/product/listProduct?menu=search">ì´ì „</a>-->
+					ì´ì „
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23">

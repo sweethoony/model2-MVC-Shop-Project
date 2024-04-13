@@ -75,7 +75,7 @@ public class PurchaseController {
 	}
 	
 //	@RequestMapping("/addPurchase.do")
-	@RequestMapping(value = "addPurchase", method =  RequestMethod.POST)
+	@RequestMapping(value = "addPurchase", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	public ModelAndView addPurchase(@ModelAttribute("purchase")Purchase purchase ,@RequestParam("prod_no") String prodNo,
 								     HttpSession session)throws Exception {
 		

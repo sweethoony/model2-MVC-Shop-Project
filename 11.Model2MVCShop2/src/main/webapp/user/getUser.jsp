@@ -39,7 +39,8 @@
 		 $(function() {
 			//==> DOM Object GET 3啊瘤 规过 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			 $( "button" ).on("click" , function() {
-					self.location = "/user/updateUser?userId=${user.userId}"
+				 var newUrl = "/user/updateUser?userId=${user.userId}"
+					 $('#mainContainer').empty().load(newUrl);
 				});
 		});
 		
@@ -50,7 +51,7 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<jsp:include page="/layout/toolbar.jsp" />
+	
    	<!-- ToolBar End /////////////////////////////////////-->
 	
 	<!--  拳搁备己 div Start /////////////////////////////////////-->

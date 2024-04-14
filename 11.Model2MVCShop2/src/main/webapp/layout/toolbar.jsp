@@ -108,6 +108,100 @@
    	
    	
    	<script type="text/javascript">
+   
+	    function getListLikeTool() {
+	    	var page = 1;
+	    	 var isLoading = false;
+	    	 
+	    	 $("a[href='#' ]:contains('인기 상품')").submit(function(event) {
+	 	        event.preventDefault(); 
+	 	        var href = $(this).attr('href'); 
+
+	 	        $('#mainContainer').empty().load(href);
+	 	    });
+	    	 $(document).ready(function() {
+	    		    loadNextPage();
+	    		});
+	    	 $(window).on('scroll', function() {
+			        if (!isLoading && $(window).scrollTop() + $(window).height() >= $(document).height() - 1) {
+			            loadNextPage();
+			        }
+			    });
+	    	 function loadNextPage(searchText) {
+			        var productInfo = "";
+			        isLoading = true;
+	        $.ajax({
+	            url: '/like/json/listLike',
+	            type: 'POST',
+	            contentType: 'application/json',
+	            data: JSON.stringify({
+	                "currentPage": page,
+	                "searchCondition": 1,
+	                "searchKeyword": null,
+	                "pageSize": 0,
+	                "endRowNum": 0,
+	                "startRowNum": 0
+	            }),
+	            success: function(data, status) {
+	                console.log(data);
+	                console.log(status);
+	                $.each(data, function(index, product) {
+	                    var fileNames = product.fileName;
+	                    if (fileNames) {
+	                        fileNames = fileNames.split(",");
+	                    } else {
+	                        fileNames = ["noImages.png"];
+	                    }
+
+	                    var imageHtml = "";
+	                    for (var i = 0; i < fileNames.length; i++) {
+	                        var imagePath = "../images/uploadFiles/" + fileNames[i].trim();
+	                        var productDetail = "<h6>" +
+	                            "<br>" +
+	                            "상품명 : " + product.prodName + "<br>" +
+	                            "상품상세정보 : " + product.prodDetail + "<br>" +
+	                            "제조일자 : " + product.manuDate + "<br>" +
+	                            "가격 : " + product.price + "<br>" +
+	                            "종류 : " + product.category + "<br>" +
+	                            "</h6>";
+
+	                        var productContent = "<div class='col-xs-12 col-sm-6 col-md-4'>" +
+	                            "<div class='thumbnail'>" +
+	                            "<a href='/product/getProduct?prodNo=" + product.prodNo + "&menu=search'><img src='" + imagePath + "' width='200' height='auto'></a>" +
+	                            "</div>" +
+	                            productDetail +
+	                            "</div>";
+
+	                        productInfo += productContent;
+	                    }
+
+	                    if ((index + 1) % 3 === 0) {
+	                        productInfo += "</div><div class='row'>";
+	                    }
+	                });
+
+	                $('#searchMainContainer').append(productInfo);
+	                page++;
+	                isLoading = false;
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Error:", error);
+	                isLoading = false;
+	            }
+	        });
+	    }
+	}
+	    
+	
+	
+	    $(document).ready(function() {
+	    	$("a[href='#' ]:contains('인기 상품')").on("click" , function() {
+	    		$('#mainContainer').empty();
+	    		getListLikeTool();
+	    	});
+	    });
+   	
+   	
    	//=====login
    	$( function() {
 		//==> 추가된부분 : "addUser"  Event 연결
@@ -143,7 +237,13 @@
 		//=============  개인정보조회회 Event  처리 =============	
 	 	$( "a:contains('개인정보조회')" ).on("click" , function() {
 	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$(self.location).attr("href","/user/getUser?userId=${sessionScope.user.userId}");
-		});
+			
+			// 새로운 URL 생성
+			var newUrl = "/user/getUser?userId=${sessionScope.user.userId}";
+
+			// 새로운 URL로 페이지 로드
+			$('#mainContainer').empty().load(newUrl);
+
+	 	});
 		
 	</script>  

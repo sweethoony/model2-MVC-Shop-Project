@@ -37,6 +37,7 @@
 
 			 });
 			 
+			 
 			 $( "td.ct_btn01:contains('이전')" ).on("click" , function() {
 				 self.location = "/index.jsp"
 
@@ -44,6 +45,49 @@
 			 });
 	 	});
 		
+		$(function(){
+			 $("#emptyHeart").on("click",function(){
+				 event.preventDefault();
+				  $('#mainContainer').empty();
+			 
+				  $.ajax({
+					  url:"/like/addLike",
+					  data : {pushLikeNo : 1,
+						  		 prodNo: ${prodVo.prodNo},
+						  		 menu: "search",
+						  		 countLikeProd: ${countLikeProd}},
+					 type: "GET",
+					 success: function(response) {
+							 $('#mainContainer').html(response);
+					 },
+					 error: function(xhr, status, error) {
+							console.error(error);
+					}	  		 
+				  });
+			 });
+		 });
+		
+		$(function(){
+			 $("#heart").on("click",function(){
+				 event.preventDefault();
+				  $('#mainContainer').empty();
+			 
+				  $.ajax({
+					  url:"/like/deleteLike",
+					  data : {pushLikeNo : 0,
+						  		 prodNo: ${prodVo.prodNo},
+						  		 menu: "search",
+						  		 countLikeProd: ${countLikeProd}},
+					type: "GET",
+					 success: function(response) {
+							 $('#mainContainer').html(response);
+					 },
+					 error: function(xhr, status, error) {
+							console.error(error);
+					}	  		 
+				  });
+			 });
+		 });
 		
 
 		$(document).ready(function(){
@@ -82,7 +126,6 @@
 	     });
 		 
 		
-		 
 		
 	</script>
 </head> 	
@@ -207,13 +250,13 @@
 		      <button id="likeButton">
 			    <c:choose>
 			        <c:when test="${pushLikeNo1 == 0}">
-			            <a href="/like/addLike?pushLikeNo=1&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}">
-			                <img src="/images/like_btn.png" width="20" height="20"/>
+			            <!--  <a href="/like/addLike?pushLikeNo=1&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}">-->
+			                <img id = "emptyHeart" src="/images/like_btn.png" width="20" height="20"/>
 			            </a>
 			        </c:when>
 			        <c:otherwise>
-			            <a href="/like/deleteLike?pushLikeNo=0&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}">
-			                <img src="/images/like_btn_red.png" width="20" height="20"/>
+			           <!-- <a href="/like/deleteLike?pushLikeNo=0&prodNo=${prodVo.prodNo}&menu=search&countLikeProd=${countLikeProd}">-->
+			                <img id = "heart" src="/images/like_btn_red.png" width="20" height="20"/>
 			            </a>
 			        </c:otherwise>
 			    </c:choose>

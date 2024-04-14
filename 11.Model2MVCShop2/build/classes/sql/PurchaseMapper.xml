@@ -24,7 +24,8 @@
 
 	
 	
-	<insert 	id="insertPurchase"		parameterType="purchase" useGeneratedKeys="true" keyProperty="tranNo,orderDate" keyColumn="TRAN_NO,ORDER_DATA">
+	<insert id="insertPurchase" parameterType="purchase" useGeneratedKeys="true" keyProperty="tranNo" keyColumn="TRAN_NO">
+
 	 	INSERT 
 	 	INTO TRANSACTION 
 	 	VALUES (SEQ_TRANSACTION_TRAN_NO.NEXTVAL,
@@ -37,7 +38,8 @@
 	 	        #{divyRequest:VARCHAR},
 	 	        1,
 	 	        SYSDATE,
-	 	        #{divyDate:DATE})
+	 	        #{divyDate:DATE}
+	 	        )
 	 </insert>
 	 
 	 

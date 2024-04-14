@@ -53,9 +53,17 @@ function fncAddPurchase() {
 		return;
 	}
 	
-	$("form[name='detailForm']").attr("method", "POST")
-    .attr("action", "/purchase/addPurchase")
-    .submit();
+	$.ajax({
+        url: "/purchase/addPurchase",
+        data: $("form[name='detailForm']").serialize(),
+        type: "POST",
+        success: function(response) {
+            $('#mainContainer').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
 }
 
 $(function() {

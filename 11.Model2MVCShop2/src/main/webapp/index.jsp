@@ -275,6 +275,14 @@ aside{
 		    getListLike();
 		});
 		
+		$(document).ready(function() {
+		    $(".product-list").on('click', 'a', function(event) {
+		        event.preventDefault(); 
+		        var href = $(this).attr('href'); 
+
+		        $('#mainContainer').empty().load(href);
+		    });
+		});
 		
 		//===> 최신 상품 ajax
 		$(document).ready(function() {
@@ -347,7 +355,9 @@ aside{
 		        event.preventDefault();
 		        loadNextPage(searchText);
 		    });
-
+		
+		    
+		    
 		    $(window).on('scroll', function() {
 		        if (!isLoading && $(window).scrollTop() + $(window).height() >= $(document).height() - 1) {
 		            loadNextPage(searchText);

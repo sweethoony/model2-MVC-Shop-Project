@@ -11,10 +11,25 @@
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
 	
+	
+	
 		$(function() {
-			 $( "td.ct_btn01:contains('수정')" ).on("click" , function() {
-				 self.location = "/purchase/updatePurchase?tranNo="+${purchaseVO.getTranNo()}
-			 });
+			$("td.ct_btn01:contains('수정')").on("click", function() {
+				var tranNo = $("form[name='updatePurchase']").data("tranNo");
+
+			    $.ajax({
+			        url: "/purchase/updatePurchase",
+			        data: { tranNo: tranNo },
+			        type: "GET",
+			        success: function(response) {
+			            $('#mainContainer').html(response);
+			        },
+			        error: function(xhr, status, error) {
+			            console.error(error);
+			        }
+			    });
+			});
+
 			 
 			 $( "td.ct_btn01:contains('취소')" ).on("click" , function() {
 				 self.location = "/product/listProduct?menu=search"
@@ -26,7 +41,7 @@
 
 <body>
 
-<form name="updatePurchase" method="post">
+<form name="updatePurchase" method="post" data-tranNo = "${purchaseVO.getTranNo()}">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>

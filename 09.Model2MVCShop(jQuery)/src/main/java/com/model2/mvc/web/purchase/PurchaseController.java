@@ -37,12 +37,12 @@ public class PurchaseController {
 	@Autowired
 	@Qualifier("PurchaseServiceImpl")
 	private PurchaseService purchaseService;
-	//setter Method ±¸Çö ¾ÊÀ½
+	//setter Method ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		
 	@Autowired
 	@Qualifier("ProductServiceImpl")
 	private ProductService productService;
-	//setter Method ±¸Çö ¾ÊÀ½
+	//setter Method ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		
 	public PurchaseController(){
 		System.out.println(this.getClass());
@@ -90,11 +90,11 @@ public class PurchaseController {
 	    purchase.setBuyer(user);
 	    purchase.setPurchaseProd(product);
 	    purchaseService.addPurchase(purchase);
-	    
-	    // Purchase °´Ã¼ ¼³Á¤
+	    System.out.println("addPurchase purchase"+ purchase);
+	    // Purchase ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
 	    
 
-	    // ModelAndView »ý¼º
+	    // ModelAndView ï¿½ï¿½ï¿½ï¿½
 	    ModelAndView mv = new ModelAndView();
 	    mv.setViewName("/purchase/getPurchase.jsp");
 	    mv.addObject("purchaseVO", purchase);
@@ -109,7 +109,7 @@ public class PurchaseController {
 	    
 	    Purchase purchase = purchaseService.getPurchase(Integer.parseInt(tranNO));
 	    System.out.println("getPurchase purchase"+ purchase);
-	    // ModelAndView »ý¼º
+	    // ModelAndView ï¿½ï¿½ï¿½ï¿½
 	    ModelAndView mv = new ModelAndView();
 	    mv.setViewName("/purchase/getPurchase.jsp");
 	    mv.addObject("purchaseVO", purchase);
@@ -128,7 +128,7 @@ public class PurchaseController {
 	    
 	    System.out.println("updatePurchaseView purchase"+ purchase);
 	    
-	    // ModelAndView »ý¼º
+	    // ModelAndView ï¿½ï¿½ï¿½ï¿½
 	    ModelAndView mv = new ModelAndView();
 	    mv.setViewName("/purchase/updatePurchase.jsp");
 	    mv.addObject("purchaseVO", purchase);
@@ -143,7 +143,7 @@ public class PurchaseController {
 		purchase.setTranNo(Integer.parseInt(tranNO));
 	    purchaseService.updatePurchase(purchase);
 	    Purchase purchase1= purchaseService.getPurchase(Integer.parseInt(tranNO));
-	    // ModelAndView »ý¼º
+	    // ModelAndView ï¿½ï¿½ï¿½ï¿½
 	    ModelAndView mv = new ModelAndView();
 	    mv.setViewName("/purchase/getPurchase.jsp");
 	    mv.addObject("purchaseVO", purchase1);
@@ -161,7 +161,7 @@ public class PurchaseController {
 		purchase.setTranNo(Integer.parseInt(tranNO));
 		purchase.setTranCode(tranCode);
 	    purchaseService.updateTranCode(purchase);
-	    // ModelAndView »ý¼º
+	    // ModelAndView ï¿½ï¿½ï¿½ï¿½
 	    ModelAndView mv = new ModelAndView();
 	    mv.setViewName("forward:/purchase/listPurchase");
 	    
@@ -186,7 +186,7 @@ public class PurchaseController {
 		System.out.println("updateTranCodeByProd purchase"+ purchase);
 		
 	    purchaseService.UpdateTranCodeByProdAction(purchase);
-	    // ModelAndView »ý¼º
+	    // ModelAndView ï¿½ï¿½ï¿½ï¿½
 	    ModelAndView mv = new ModelAndView();
 	    mv.setViewName("/product/listProduct?menu=manage");
 
@@ -217,7 +217,7 @@ public class PurchaseController {
 		System.out.println(resultPage);
 		System.out.println("listProduct  map"+map);
 		
-		// Model °ú View ¿¬°á
+		// Model ï¿½ï¿½ View ï¿½ï¿½ï¿½ï¿½
 		ModelAndView mv = new ModelAndView();
 	    mv.setViewName("/purchase/listPurchase.jsp");
 	    mv.addObject("list", map.get("list"));

@@ -26,7 +26,7 @@ import com.model2.mvc.service.purchase.PurchaseService;
 import com.model2.mvc.service.user.UserService;
 
 
-//==> È¸¿ø°ü¸® RestController
+//==> È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RestController
 @RestController
 @RequestMapping("/purchase/*")
 public class PurchaseRestController {
@@ -35,12 +35,12 @@ public class PurchaseRestController {
 	@Autowired
 	@Qualifier("PurchaseServiceImpl")
 	private PurchaseService purchaseService;
-	//setter Method ±¸Çö ¾ÊÀ½
+	//setter Method ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		
 	@Autowired
 	@Qualifier("ProductServiceImpl")
 	private ProductService productService;
-	//setter Method ±¸Çö ¾ÊÀ½
+	//setter Method ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		
 	public PurchaseRestController(){
 		System.out.println(this.getClass());
@@ -52,6 +52,13 @@ public class PurchaseRestController {
 		System.out.println("/purchase/json/getPurchase : GET");
 		
 		Purchase purchase = purchaseService.getPurchase(Integer.parseInt(tranNo));
+		//Business Logic
+		return purchase;
+	}
+	@RequestMapping( value="/json/getPurchase", method=RequestMethod.POST )
+	public Purchase getPurchase( @RequestBody Purchase purchase ) throws Exception{
+		System.out.println("purchase" + purchase);
+		System.out.println("/purchase/json/getPurchase : POST");
 		//Business Logic
 		return purchase;
 	}
